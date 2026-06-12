@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src https://xlicuyemmiapundcqqqf.supabase.co; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F5E6D8">
@@ -130,7 +130,7 @@
       <nav class="nav__links" aria-label="Primary">
         <a href="#menu">Menu</a>
         <a href="#custom">Custom Orders</a>
-        <a href="#contact">Order</a>
+        <a href="#order">Order</a>
       </nav>
 
       <a class="nav__ig" href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer" aria-label="Order on WhatsApp">
@@ -368,13 +368,154 @@
       </div>
     </section>
 
+    <!-- Order form -->
+    <section class="section section--orderform" id="order" aria-labelledby="order-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <svg class="orn orn-bow-sm" aria-hidden="true" focusable="false" width="56" height="36"><use href="#icon-bow"/></svg>
+          <h2 class="section__title" id="order-title">Order Online</h2>
+          <p class="section__sub">Fresh-baked for your date</p>
+        </header>
+
+        <div class="oform reveal">
+
+          <p class="oform__loading" id="oform-loading" role="status" hidden>Loading the menu&hellip;</p>
+
+          <!-- Shown when JS is off or the catalog can't be reached -->
+          <div class="oform__fallback" id="oform-fallback">
+            <svg class="oform__heart" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg>
+            <h3 class="oform__panel-title">Online ordering is being set up</h3>
+            <p>Message us on WhatsApp to order &mdash; we reply quickly.</p>
+            <a class="btn btn--ghost" href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" focusable="false" width="18" height="18"><use href="#icon-whatsapp"/></svg>
+              Order on WhatsApp
+            </a>
+          </div>
+
+          <div class="oform__success" id="oform-success" hidden>
+            <svg class="oform__heart" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg>
+            <h3 class="oform__panel-title" id="oform-success-title" tabindex="-1">Order received!</h3>
+            <p id="oform-success-text">We will text you shortly to confirm the details and the 20% deposit.</p>
+            <a class="btn btn--ghost" href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" focusable="false" width="18" height="18"><use href="#icon-whatsapp"/></svg>
+              Message us on WhatsApp
+            </a>
+          </div>
+
+          <form class="oform__form" id="order-form" novalidate hidden>
+
+            <fieldset class="oform__items">
+              <legend class="oform__legend">Your desserts</legend>
+              <div class="oform__rows" id="oform-rows"></div>
+              <button type="button" class="btn btn--ghost oform__add" id="oform-add">+ Add another dessert</button>
+            </fieldset>
+
+            <div class="oform__grid oform__grid--when">
+              <div class="oform__field">
+                <label class="oform__label" for="oform-date">Date needed</label>
+                <input class="oform__input" type="date" id="oform-date" name="needed_date" required
+                       aria-describedby="oform-date-help oform-date-error">
+                <p class="oform__help" id="oform-date-help">Minimum 1 day ahead (Hawaii time)</p>
+                <p class="oform__error" id="oform-date-error" hidden></p>
+              </div>
+
+              <fieldset class="oform__field">
+                <legend class="oform__label">Pickup or delivery</legend>
+                <div class="oform__pills">
+                  <label class="oform__pill">
+                    <input type="radio" name="fulfillment" value="pickup" checked>
+                    <span>Pickup</span>
+                  </label>
+                  <label class="oform__pill">
+                    <input type="radio" name="fulfillment" value="delivery">
+                    <span>Delivery</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="oform__field" id="oform-address-wrap" hidden>
+              <label class="oform__label" for="oform-address">Delivery address</label>
+              <input class="oform__input" type="text" id="oform-address" name="delivery_address"
+                     autocomplete="street-address" maxlength="400"
+                     aria-describedby="oform-address-help oform-address-error">
+              <p class="oform__help" id="oform-address-help">Delivery fee depends on location &mdash; we will confirm it with you.</p>
+              <p class="oform__error" id="oform-address-error" hidden></p>
+            </div>
+
+            <div class="oform__grid oform__grid--contact">
+              <div class="oform__field">
+                <label class="oform__label" for="oform-name">Your name</label>
+                <input class="oform__input" type="text" id="oform-name" name="customer_name"
+                       autocomplete="name" maxlength="120" required aria-describedby="oform-name-error">
+                <p class="oform__error" id="oform-name-error" hidden></p>
+              </div>
+              <div class="oform__field">
+                <label class="oform__label" for="oform-phone">Phone</label>
+                <input class="oform__input" type="tel" id="oform-phone" name="customer_phone"
+                       inputmode="tel" autocomplete="tel" maxlength="24" required aria-describedby="oform-phone-error">
+                <p class="oform__error" id="oform-phone-error" hidden></p>
+              </div>
+              <div class="oform__field">
+                <label class="oform__label" for="oform-instagram">Instagram <span class="oform__optional">(optional)</span></label>
+                <input class="oform__input" type="text" id="oform-instagram" name="customer_contact"
+                       placeholder="@yourhandle" autocomplete="off" maxlength="120">
+              </div>
+            </div>
+
+            <div class="oform__field">
+              <label class="oform__label" for="oform-notes">Notes <span class="oform__optional">(optional)</span></label>
+              <textarea class="oform__input oform__textarea" id="oform-notes" name="notes" rows="3" maxlength="2000"
+                        placeholder="Inscription on the cake, candles, allergies&hellip;"></textarea>
+            </div>
+
+            <div class="oform__hp" aria-hidden="true">
+              <label for="oform-website">Website</label>
+              <input type="text" id="oform-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="oform__summary" aria-live="polite">
+              <p class="oform__total" id="oform-total">Estimated total $0 &middot; 20% deposit $0 confirms your order</p>
+              <p class="oform__error oform__error--form" id="oform-form-error" hidden></p>
+            </div>
+            <p class="oform__help oform__help--center">Final total and any delivery fee are confirmed personally before we bake.</p>
+
+            <div class="oform__actions">
+              <button type="submit" class="btn btn--primary btn--lg oform__submit" id="oform-submit">Place order</button>
+            </div>
+
+          </form>
+        </div>
+
+        <template id="oform-row-template">
+          <div class="oform-row">
+            <div class="oform__field oform-row__product">
+              <label class="oform__label">Dessert</label>
+              <select class="oform__input oform__select" required></select>
+            </div>
+            <div class="oform__field oform-row__flavor">
+              <label class="oform__label">Flavor</label>
+              <select class="oform__input oform__select"></select>
+            </div>
+            <div class="oform__field oform-row__qty">
+              <label class="oform__label">Qty</label>
+              <input class="oform__input" type="number" min="1" step="1" value="1" inputmode="numeric" required>
+            </div>
+            <p class="oform-row__price">$0</p>
+            <button type="button" class="oform-row__remove" aria-label="Remove this dessert">&times;</button>
+            <p class="oform__error oform-row__error" hidden></p>
+          </div>
+        </template>
+      </div>
+    </section>
+
     <!-- Order / Contact -->
     <section class="section section--order" id="contact" aria-labelledby="contact-title">
       <div class="container">
         <header class="section__head reveal">
           <svg class="orn orn-bow-sm" aria-hidden="true" focusable="false" width="56" height="36"><use href="#icon-bow"/></svg>
           <h2 class="section__title" id="contact-title">Place your order</h2>
-          <p class="section__sub">We can't wait to bake for you</p>
+          <p class="section__sub">…or message us directly</p>
         </header>
 
         <ul class="order-list reveal">
@@ -424,5 +565,7 @@
   </footer>
 
   <script src="script.js" defer></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/order-form.js" defer></script>
 </body>
 </html>
