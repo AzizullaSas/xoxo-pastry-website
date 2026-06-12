@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F5E6D8">
   <meta name="description" content="XOXO Pastry — handcrafted desserts with only natural ingredients. Signature cheesecakes, NY style cakes, tartlets, fruit desserts and more. Message us to order.">
@@ -26,7 +28,12 @@
   <meta property="og:title" content="XOXO Pastry — Handcrafted Desserts">
   <meta property="og:description" content="Handcrafted cheesecakes, tartlets, fruit desserts and custom celebration cakes. Made with love.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="images/custom-orders.jpg">
+  <meta property="og:site_name" content="XOXO Pastry">
+  <meta property="og:image" content="https://raw.githubusercontent.com/AzizullaSas/xoxo-pastry-website/main/images/custom-orders.jpg">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1280">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/AzizullaSas/xoxo-pastry-website/main/images/custom-orders.jpg">
 </head>
 <body id="top">
 
@@ -321,7 +328,7 @@
 
             <p>We create beautiful handcrafted desserts for weddings, private celebrations, and special events. From elegant dessert tables to custom sweets, XOXO Pastry brings sweetness, style, and charm to every occasion.</p>
 
-            <h4 class="custom__heading">Perfect for</h4>
+            <h3 class="custom__heading">Perfect for</h3>
             <ul class="perfect-list">
               <li><svg aria-hidden="true" focusable="false"><use href="#icon-ring"/></svg>Weddings</li>
               <li><svg aria-hidden="true" focusable="false"><use href="#icon-anniversary"/></svg>Anniversaries</li>
