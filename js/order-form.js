@@ -77,7 +77,7 @@
 
   function loadCatalog(cfg) {
     const url = cfg.SUPABASE_URL +
-      '/rest/v1/products?select=id,name,unit,base_price,min_qty,note,sort,' +
+      '/rest/v1/products?select=id,name,unit,base_price,min_qty,note,sort,image_url,' +
       'product_flavors(name,price_override,sort)&active=is.true&order=sort';
     fetch(url, {
       headers: {
@@ -110,6 +110,7 @@
       name: raw.name,
       basePrice: Number(raw.base_price),
       minQty: Math.max(1, parseInt(raw.min_qty, 10) || 1),
+      imageUrl: raw.image_url || null,
       flavors
     };
   }
@@ -213,6 +214,19 @@
   function syncRowProduct(row) {
     const p = productById(rowProduct(row).value);
     if (!p) return;
+
+    const thumb = row.querySelector('.oform-row__thumb');
+    if (thumb) {
+      if (p.imageUrl) {
+        thumb.src = p.imageUrl;
+        thumb.alt = p.name;
+        thumb.hidden = false;
+      } else {
+        thumb.removeAttribute('src');
+        thumb.alt = '';
+        thumb.hidden = true;
+      }
+    }
 
     const flavorSelect = rowFlavor(row);
     flavorSelect.textContent = '';

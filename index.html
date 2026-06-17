@@ -542,21 +542,24 @@
 
         <template id="oform-row-template">
           <div class="oform-row">
-            <div class="oform__field oform-row__product">
-              <label class="oform__label">Dessert</label>
-              <select class="oform__input oform__select" required></select>
+            <img class="oform-row__thumb" alt="" width="84" height="84" loading="lazy" decoding="async" hidden>
+            <div class="oform-row__main">
+              <div class="oform__field oform-row__product">
+                <label class="oform__label">Dessert</label>
+                <select class="oform__input oform__select" required></select>
+              </div>
+              <div class="oform__field oform-row__flavor">
+                <label class="oform__label">Flavor</label>
+                <select class="oform__input oform__select"></select>
+              </div>
+              <div class="oform__field oform-row__qty">
+                <label class="oform__label">Qty</label>
+                <input class="oform__input" type="number" min="1" step="1" value="1" inputmode="numeric" required>
+              </div>
+              <p class="oform-row__price">$0</p>
+              <button type="button" class="oform-row__remove" aria-label="Remove this dessert">&times;</button>
+              <p class="oform__error oform-row__error" hidden></p>
             </div>
-            <div class="oform__field oform-row__flavor">
-              <label class="oform__label">Flavor</label>
-              <select class="oform__input oform__select"></select>
-            </div>
-            <div class="oform__field oform-row__qty">
-              <label class="oform__label">Qty</label>
-              <input class="oform__input" type="number" min="1" step="1" value="1" inputmode="numeric" required>
-            </div>
-            <p class="oform-row__price">$0</p>
-            <button type="button" class="oform-row__remove" aria-label="Remove this dessert">&times;</button>
-            <p class="oform__error oform-row__error" hidden></p>
           </div>
         </template>
       </div>
