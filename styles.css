@@ -677,47 +677,6 @@ ul, ol { padding: 0; list-style: none; }
 }
 
 /* ============================================================
-   Sweet Gallery
-   ============================================================ */
-.section--gallery { background: var(--bg-cream-deep); }
-
-/* Masonry via CSS columns — handles mixed portrait/landscape shots */
-.gallery {
-  column-count: 2;
-  column-gap: var(--space-2);
-  max-width: var(--maxw-content);
-  margin: 0 auto;
-}
-@media (min-width: 680px)  { .gallery { column-count: 3; column-gap: var(--space-3); } }
-@media (min-width: 1024px) { .gallery { column-count: 4; } }
-
-.gallery__item {
-  margin: 0 0 var(--space-2);
-  break-inside: avoid;
-  border-radius: var(--radius-soft);
-  overflow: hidden;
-  position: relative;
-  box-shadow: var(--shadow-card);
-}
-@media (min-width: 680px) { .gallery__item { margin-bottom: var(--space-3); } }
-.gallery__item::after {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  border: 1px double var(--gold-line);
-  border-radius: calc(var(--radius-soft) - 2px);
-  pointer-events: none;
-  opacity: 0.5;
-}
-.gallery__item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 600ms cubic-bezier(.2,.7,.2,1);
-}
-.gallery__item:hover img { transform: scale(1.04); }
-
-/* ============================================================
    Custom Orders & Catering
    ============================================================ */
 
@@ -1036,7 +995,6 @@ ul, ol { padding: 0; list-style: none; }
   .reveal { opacity: 1; transform: none; }
   .custom__media:hover img,
   .menu-card:hover .menu-card__media img { transform: none; }
-  .gallery__item:hover img { transform: none; }
 }
 
 /* ============================================================
