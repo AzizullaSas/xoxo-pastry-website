@@ -31,7 +31,7 @@ MENU = [
    ("Matcha", "\U0001F375", "", "$65", 27),
    ("Chocolate Ice Cream", "\U0001F368", "", "$65", 31),
    ("Pistachio", "\U0001F49A", "", "$75", 24),
-   ("Tiramisu", "☕", "", "$75", 22),
+   ("Tiramisu", "☕", "", "$75", 22, "Not gluten free"),
    ("Lilikoi Mango", "\U0001F96D", "", "$80", 29),
    ("Triple Chocolate", "\U0001F36B", "", "$70", 13),
  ]),
@@ -103,7 +103,9 @@ for cat, sub, items in MENU:
         lines.append(ind + '    <p class="menu-cat__sub">%s</p>' % esc(sub))
     lines.append(ind + '  </header>')
     lines.append(ind + '  <ul class="fcard-list">')
-    for name, emoji, desc, price, photo in items:
+    for item in items:
+        name, emoji, desc, price, photo = item[:5]
+        note = item[5] if len(item) > 5 else ""
         slug = slugify(cat, name)
         dims = None if photo is None else process_photo(photo, slug)
         cls = "fcard reveal" + ("" if dims else " fcard--nophoto")
@@ -117,6 +119,8 @@ for cat, sub, items in MENU:
         lines.append(ind + '        <h4 class="fcard__name">%s</h4>' % nm)
         if desc:
             lines.append(ind + '        <p class="fcard__desc">%s</p>' % esc(desc))
+        if note:
+            lines.append(ind + '        <p class="fcard__note fcard__note--warn">%s</p>' % esc(note))
         lines.append(ind + '        <p class="fcard__price">%s</p>' % esc(price))
         lines.append(ind + '      </div>')
         lines.append(ind + '    </li>')

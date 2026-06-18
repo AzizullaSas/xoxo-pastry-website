@@ -605,6 +605,21 @@ ul, ol { padding: 0; list-style: none; }
   color: var(--accent-rose-deep);
   letter-spacing: 0.01em;
 }
+.fcard__note {
+  margin-top: 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+.fcard__note--warn {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(168, 95, 76, 0.1);
+  color: var(--accent-rose-deep);
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
 
 /* ============================================================
    Custom Orders & Catering
