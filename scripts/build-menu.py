@@ -18,7 +18,7 @@ MENU = [
  ("Signature Cheesecakes", "Two sizes · prices as 6″ / 8″", [
    ("Coconut Strawberry", "\U0001F353", "Coconut cheesecake with strawberry filling", "6″ $45 · 8″ $70", 3),
    ("Pistachio Raspberry", "\U0001F49A", "Pistachio cheesecake with raspberry confit and pistachio cream", "6″ $50 · 8″ $85", 19),
-   ("Honey", "\U0001F36F", "Delicate vanilla honey cheesecake with honey layers", "6″ $45 · 8″ $75", None),
+   ("Honey", "\U0001F36F", "Delicate vanilla honey cheesecake with honey layers", "6″ $45 · 8″ $75", 12),
    ("Cherry Chocolate", "\U0001F352", "Black Forest — chocolate cheesecake, cherry confit and white chocolate ganache", "6″ $45 · 8″ $75", 2),
    ("Raspberry Mousse", "\U0001FAD0", "Raspberry cheesecake with white chocolate mousse and fresh raspberries", "6″ $45 · 8″ $75", 4),
    ("Mint Blueberry", "\U0001FAD0", "Two-layer mint and blueberry cheesecake with blueberry ganache", "6″ $45 · 8″ $70", 5),
