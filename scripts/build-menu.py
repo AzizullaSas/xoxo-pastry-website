@@ -1,10 +1,10 @@
-# One-off generator that built the poster-style per-flavor menu cards from
-# the original photos in "Меню XOXO PASTRY". Resizes/compresses into
-# images/menu/ (no background removal) and emits the menu HTML snippet.
-
-# Rebuild the menu as poster-style per-flavor cards using the original
-# (un-cut) photos. Resizes/compresses each mapped photo into images/menu/
-# and emits the menu HTML snippet. No background removal.
+# Generator for the poster-style per-flavor menu cards.
+# Resizes/compresses each mapped photo into images/menu/ (no background
+# removal) and emits the menu HTML snippet to _menu_snippet.html.
+#   py scripts/build-menu.py "C:\Users\User\Desktop\Меню XOXO PASTRY"
+# Photo numbers refer to photo_<N>_*.jpg in that folder (1-29 original,
+# 30-33 = later flavor photos: red velvet / chocolate ice cream /
+# classic vanilla / raspberry pistachio).
 import sys, os, glob, html
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 
@@ -12,57 +12,61 @@ SRC = sys.argv[1]
 OUTIMG = "images/menu"
 os.makedirs(OUTIMG, exist_ok=True)
 
-# category -> dict(title, sub, items)
-# item: (name, emoji, desc, price, photo_number_or_None, slug)
+# Each category: (title, sub, items)
+# item: (name, emoji, desc, price, photo_number_or_None)
 MENU = [
- ("Signature Cheesecakes", "Two sizes · prices as 6″ / 8″", [
-   ("Coconut Strawberry", "\U0001F353", "Coconut cheesecake with strawberry filling", "6″ $45 · 8″ $70", 3),
-   ("Pistachio Raspberry", "\U0001F49A", "Pistachio cheesecake with raspberry confit and pistachio cream", "6″ $50 · 8″ $85", 19),
-   ("Honey", "\U0001F36F", "Delicate vanilla honey cheesecake with honey layers", "6″ $45 · 8″ $75", 12),
-   ("Cherry Chocolate", "\U0001F352", "Black Forest — chocolate cheesecake, cherry confit and white chocolate ganache", "6″ $45 · 8″ $75", 2),
-   ("Raspberry Mousse", "\U0001FAD0", "Raspberry cheesecake with white chocolate mousse and fresh raspberries", "6″ $45 · 8″ $75", 4),
-   ("Mint Blueberry", "\U0001FAD0", "Two-layer mint and blueberry cheesecake with blueberry ganache", "6″ $45 · 8″ $70", 5),
-   ("Triple Chocolate", "\U0001F36B", "Rich triple-chocolate cheesecake", "6″ $45 · 8″ $70", None),
-   ("Baklava", "\U0001F36F", "Creamy cheesecake layered with baklava and pistachios", "8″ only $80", 17),
+ ("Signature Cheesecakes",
+  "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
+   ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 8″ $70", 3),
+   ("Pistachio Raspberry", "\U0001F49A", "Buttery sablé crust with pistachio flour, creamy pistachio cheesecake, rich raspberry confit and silky white chocolate pistachio ganache", "6″ $50 · 8″ $85", 19),
+   ("Honey", "\U0001F36F", "Crispy sablé crust, honey cheesecake layered with delicate honey sponge and honey crumble", "6″ $45 · 8″ $75", 12),
+   ("Cherry Chocolate", "\U0001F352", "Black Forest — crispy sablé crust, rich chocolate cheesecake layered with vibrant cherry confit and finished with silky white chocolate ganache", "6″ $45 · 8″ $75", 2),
+   ("Raspberry Mousse", "\U0001FAD0", "Crispy sablé crust, creamy raspberry cheesecake topped with delicate white chocolate mousse and pieces of fresh raspberry", "6″ $45 · 8″ $75", 4),
+   ("Mint Blueberry", "\U0001FAD0", "Crispy sablé crust, a two-layer cheesecake infused with refreshing mint and juicy blueberries, crowned with smooth blueberry ganache", "6″ $45 · 8″ $70", 5),
+   ("Baklava", "\U0001F36F", "Creamy honey cheesecake on a crisp base, layered with homemade honey syrup-soaked baklava and crushed pistachios", "8″ only $80", 17),
  ]),
- ("Basque Cheesecake", "Gluten free · caramelized Spanish-style · 8″", [
-   ("Classic Vanilla", "", "Caramelized crust, soft melt-in-mouth center", "$65", None),
-   ("Matcha", "\U0001F375", "Stone-ground matcha with a caramelized top", "$65", 27),
-   ("Chocolate Ice Cream", "\U0001F368", "Rich chocolate Basque", "$65", None),
-   ("Triple Chocolate", "\U0001F36B", "Deep triple-chocolate Basque", "$70", 13),
-   ("Pistachio", "\U0001F49A", "Pistachio Basque cheesecake", "$75", 24),
-   ("Tiramisu", "☕", "Coffee-soaked tiramisu Basque", "$75", 22),
-   ("Lilikoi Mango", "\U0001F96D", "Passion fruit and mango Basque", "$80", 29),
+ ("Basque Cheesecake",
+  "Gluten-free · Spanish-style, caramelized crust and soft, melt-in-your-mouth center · 8″ · serves 8–10", [
+   ("Classic Vanilla", "", "", "$65", 32),
+   ("Matcha", "\U0001F375", "", "$65", 27),
+   ("Chocolate Ice Cream", "\U0001F368", "", "$65", 31),
+   ("Pistachio", "\U0001F49A", "", "$75", 24),
+   ("Tiramisu", "☕", "", "$75", 22),
+   ("Lilikoi Mango", "\U0001F96D", "", "$80", 29),
+   ("Triple Chocolate", "\U0001F36B", "", "$70", 13),
  ]),
- ("Baby Basque Cheesecake", "Gluten free · 6″ · serves 2–4 · $45 each", [
-   ("Brownie Biscoff", "", "Brownie base with a Biscoff glaze", "$45", 26),
-   ("Brownie Vanilla", "", "Brownie base with vanilla cheesecake", "$45", 14),
-   ("Raspberry Pistachio", "", "Raspberry and pistachio", "$45", None),
-   ("Lilikoi-Mango", "\U0001F96D", "Passion fruit and mango", "$45", 23),
-   ("Chocolate Cherry", "\U0001F352", "Chocolate cheesecake with cherry", "$45", 25),
+ ("Baby Basque Cheesecake",
+  "Gluten-free · 6.3″ · serves 2–4 · $45 each", [
+   ("Brownie Biscoff", "", "", "$45", 26),
+   ("Brownie Vanilla", "", "", "$45", 14),
+   ("Raspberry Pistachio", "", "", "$45", 33),
+   ("Lilikoi-Mango", "\U0001F96D", "", "$45", 23),
+   ("Chocolate Cherry", "\U0001F352", "", "$45", 25),
  ]),
- ("NY Cookies", "Thick &amp; gooey · $7 each · min 4", [
-   ("Pistachio", "\U0001F49A", "Stuffed pistachio cookie", "$7", 6),
-   ("Nutella", "\U0001F36B", "Stuffed chocolate-hazelnut cookie", "$7", 8),
-   ("Red Velvet", "❤️", "Stuffed red velvet cookie", "$7", None),
-   ("Lotus", "", "Stuffed Lotus Biscoff cookie", "$7", 7),
+ ("NY Cookies",
+  "Thick New York–style cookies, soft gooey centers and golden crispy edges · $7 each · min 4", [
+   ("Pistachio", "\U0001F49A", "", "$7", 6),
+   ("Nutella", "\U0001F36B", "", "$7", 8),
+   ("Red Velvet", "❤️", "", "$7", 30),
+   ("Lotus", "", "", "$7", 7),
  ]),
- ("Tartlets", "Crispy shell, creamy filling · $27 · box of 3", [
-   ("Tiramisu", "☕", "Cocoa-dusted mascarpone tartlet", "$27", 10),
-   ("Berry", "\U0001F353", "Vanilla cream tartlet with fresh strawberries", "$27", 11),
-   ("Pistachio Raspberry", "\U0001F49A", "Pistachio cream and raspberry confit", "$27", 1),
+ ("Tartlets",
+  "Crispy shell, creamy filling and that perfect not-too-sweet balance · $27 · box of 3", [
+   ("Tiramisu", "☕", "", "$27", 10),
+   ("Berry", "\U0001F353", "", "$27", 11),
+   ("Pistachio Raspberry", "\U0001F49A", "", "$27", 1),
  ]),
- ("Fruit Desserts", "Box of 7", [
-   ("Assorted Box", "\U0001F36B", "Glossy chocolate-shell bonbons with a surprise center — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 9),
+ ("Fruit Desserts", "Box of 7 · $70 ($10 each)", [
+   ("Assorted Box", "\U0001F36B", "Crispy chocolate shell, smooth creamy ganache and a surprise center you won’t expect — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 9),
  ]),
  ("Meringue Roll", "", [
-   ("Meringue Roll", "\U0001F353", "Light meringue with cream cheese, pistachios and fresh raspberries", "$60", 16),
+   ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
  ]),
  ("Tiramisu", "", [
-   ("Tiramisu", "☕", "Mascarpone cream and coffee-soaked savoiardi", "Whole cake $70 · cup $8–$9", 28),
+   ("Tiramisu", "☕", "Classic Italian dessert made with layers of mascarpone cream and coffee-soaked savoiardi cookies", "Whole cake $70 · cup $8 / $9", 28),
  ]),
  ("Hawaiian Honey Cake", "", [
-   ("Hawaiian Honey Cake", "\U0001F36F", "Honey layers with house-made salted caramel", "$80", 18),
+   ("Hawaiian Honey Cake", "\U0001F36F", "Delicate honey cake layers soaked in cream cheese frosting with rich house-made salted caramel", "$80", 18),
  ]),
 ]
 
@@ -74,9 +78,7 @@ def process_photo(num, slug):
     matches = glob.glob(os.path.join(SRC, "photo_%d_*.jpg" % num))
     if not matches:
         print("MISSING", num); return None
-    im = Image.open(matches[0])
-    im = ImageOps.exif_transpose(im).convert("RGB")
-    # web resize: cap long side at 1000
+    im = ImageOps.exif_transpose(Image.open(matches[0])).convert("RGB")
     w, h = im.size
     s = min(1.0, 1000.0 / max(w, h))
     if s < 1.0:
@@ -98,14 +100,13 @@ for cat, sub, items in MENU:
     lines.append(ind + '  <header class="menu-cat__head">')
     lines.append(ind + '    <h3 class="menu-cat__title">%s</h3>' % esc(cat))
     if sub:
-        lines.append(ind + '    <p class="menu-cat__sub">%s</p>' % sub)
+        lines.append(ind + '    <p class="menu-cat__sub">%s</p>' % esc(sub))
     lines.append(ind + '  </header>')
     lines.append(ind + '  <ul class="fcard-list">')
     for name, emoji, desc, price, photo in items:
         slug = slugify(cat, name)
-        nophoto = photo is None
-        dims = None if nophoto else process_photo(photo, slug)
-        cls = "fcard reveal" + (" fcard--nophoto" if (nophoto or not dims) else "")
+        dims = None if photo is None else process_photo(photo, slug)
+        cls = "fcard reveal" + ("" if dims else " fcard--nophoto")
         lines.append(ind + '    <li class="%s">' % cls)
         if dims:
             w, h = dims
@@ -114,7 +115,8 @@ for cat, sub, items in MENU:
         lines.append(ind + '      <div class="fcard__body">')
         nm = esc(name) + (' <span class="fcard__emoji">%s</span>' % emoji if emoji else "")
         lines.append(ind + '        <h4 class="fcard__name">%s</h4>' % nm)
-        lines.append(ind + '        <p class="fcard__desc">%s</p>' % esc(desc))
+        if desc:
+            lines.append(ind + '        <p class="fcard__desc">%s</p>' % esc(desc))
         lines.append(ind + '        <p class="fcard__price">%s</p>' % esc(price))
         lines.append(ind + '      </div>')
         lines.append(ind + '    </li>')
@@ -124,5 +126,6 @@ for cat, sub, items in MENU:
 snippet = "\n".join(lines) + "\n"
 with open("_menu_snippet.html", "w", encoding="utf-8") as f:
     f.write(snippet)
-print("\nwrote _menu_snippet.html  cards:", snippet.count('class="fcard'))
-print("images in images/menu:", len(os.listdir(OUTIMG)))
+print("wrote _menu_snippet.html | cards:", snippet.count('<li class="fcard'),
+      "| nophoto:", snippet.count('fcard--nophoto'),
+      "| images:", len(os.listdir(OUTIMG)))
