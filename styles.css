@@ -1112,6 +1112,7 @@ ul, ol { padding: 0; list-style: none; }
   grid-template-areas:
     "product product product"
     "flavor  flavor  flavor"
+    "addons  addons  addons"
     "qty     price   remove"
     "error   error   error";
   align-items: end;
@@ -1121,10 +1122,34 @@ ul, ol { padding: 0; list-style: none; }
 .oform-row--noflavor {
   grid-template-areas:
     "product product product"
+    "addons  addons  addons"
     "qty     price   remove"
     "error   error   error";
 }
 .oform-row--noflavor .oform-row__flavor { display: none; }
+.oform-row__addons {
+  grid-area: addons;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  align-items: center;
+}
+.oform-row__addons[hidden] { display: none; }
+.oform-addon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--ink-brown-soft);
+  cursor: pointer;
+}
+.oform-addon input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent-rose);
+  cursor: pointer;
+}
 .oform-row__product { grid-area: product; }
 .oform-row__flavor  { grid-area: flavor; }
 .oform-row__qty     { grid-area: qty; }
@@ -1249,11 +1274,13 @@ ul, ol { padding: 0; list-style: none; }
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr) 6.5rem minmax(4.5rem, auto) 48px;
     grid-template-areas:
       "product flavor qty price remove"
+      "addons  addons addons addons addons"
       "error   error  error error error";
   }
   .oform-row--noflavor {
     grid-template-areas:
       "product product qty price remove"
+      "addons  addons  addons addons addons"
       "error   error   error error error";
   }
   .oform__grid--when {

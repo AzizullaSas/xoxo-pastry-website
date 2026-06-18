@@ -78,7 +78,8 @@
   function loadCatalog(cfg) {
     const url = cfg.SUPABASE_URL +
       '/rest/v1/products?select=id,name,unit,base_price,min_qty,note,sort,' +
-      'product_flavors(name,price_override,sort)&active=is.true&order=sort';
+      'product_flavors(name,price_override,sort),product_addons(name,price,sort)' +
+      '&active=is.true&order=sort';
     fetch(url, {
       headers: {
         apikey: cfg.SUPABASE_ANON_KEY,
@@ -105,12 +106,17 @@
         name: f.name,
         price: f.price_override == null ? Number(raw.base_price) : Number(f.price_override)
       }));
+    const addons = (raw.product_addons || [])
+      .slice()
+      .sort((a, b) => (a.sort || 0) - (b.sort || 0))
+      .map((a) => ({ name: a.name, price: Number(a.price) }));
     return {
       id: raw.id,
       name: raw.name,
       basePrice: Number(raw.base_price),
       minQty: Math.max(1, parseInt(raw.min_qty, 10) || 1),
-      flavors
+      flavors,
+      addons
     };
   }
 
@@ -226,15 +232,48 @@
     qty.min = String(p.minQty);
     qty.value = String(p.minQty);
 
+    renderRowAddons(row, p);
     refreshRowPrice(row);
+  }
+
+  function renderRowAddons(row, p) {
+    const wrap = row.querySelector('.oform-row__addons');
+    if (!wrap) return;
+    wrap.textContent = '';
+    p.addons.forEach((a) => {
+      const label = document.createElement('label');
+      label.className = 'oform-addon';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = a.name;
+      cb.addEventListener('change', () => refreshRowPrice(row));
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(' Add ' + a.name + ' (+$' + money(a.price) + ')'));
+      wrap.appendChild(label);
+    });
+    wrap.hidden = p.addons.length === 0;
+  }
+
+  function rowAddonTotal(row) {
+    const p = productById(rowProduct(row).value);
+    if (!p || !p.addons.length) return 0;
+    let sum = 0;
+    row.querySelectorAll('.oform-row__addons input:checked').forEach((cb) => {
+      const a = p.addons.find((x) => x.name === cb.value);
+      if (a) sum += a.price;
+    });
+    return sum;
   }
 
   function rowUnitPrice(row) {
     const p = productById(rowProduct(row).value);
     if (!p) return 0;
-    if (!p.flavors.length) return p.basePrice;
-    const chosen = p.flavors.find((f) => f.name === rowFlavor(row).value);
-    return chosen ? chosen.price : p.basePrice;
+    let base = p.basePrice;
+    if (p.flavors.length) {
+      const chosen = p.flavors.find((f) => f.name === rowFlavor(row).value);
+      base = chosen ? chosen.price : p.basePrice;
+    }
+    return base + rowAddonTotal(row);
   }
 
   function rowLineTotal(row) {
@@ -364,6 +403,9 @@
           quantity: parseInt(rowQty(row).value, 10) || 0
         };
         if (!rowFlavor(row).disabled) item.flavor = rowFlavor(row).value;
+        const addons = Array.from(row.querySelectorAll('.oform-row__addons input:checked'))
+          .map((cb) => cb.value);
+        if (addons.length) item.addons = addons;
         return item;
       })
     };

@@ -38,7 +38,7 @@ MENU = [
  ("Baby Basque Cheesecake",
   "Gluten-free · 6.3″ · serves 2–4 · $45 each", [
    ("Brownie Biscoff", "", "", "$45", 26, "Not gluten free"),
-   ("Brownie Vanilla", "", "", "$45", 25, "Not gluten free"),
+   ("Brownie Vanilla", "", "(Blueberries on top optional · +$5)", "$45", 25, "Not gluten free"),
    ("Raspberry Pistachio", "", "", "$45", 33),
    ("Lilikoi-Mango", "\U0001F96D", "", "$45", 23),
    ("Chocolate Cherry", "\U0001F352", "", "$45", None),

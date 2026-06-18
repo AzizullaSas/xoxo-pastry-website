@@ -475,6 +475,10 @@
         var li = el('li');
         var label = item.quantity + ' × ' + item.product_name +
           (item.flavor ? ' (' + item.flavor + ')' : '');
+        var addons = Array.isArray(item.addons) ? item.addons : [];
+        if (addons.length) {
+          label += ' + ' + addons.map(function (a) { return a.name; }).join(', ');
+        }
         li.appendChild(el('span', null, label));
         li.appendChild(el('span', 'ocard__item-price', money(item.line_total)));
         list.appendChild(li);
