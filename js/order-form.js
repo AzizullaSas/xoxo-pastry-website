@@ -78,7 +78,7 @@
   function loadCatalog(cfg) {
     const url = cfg.SUPABASE_URL +
       '/rest/v1/products?select=id,name,unit,base_price,min_qty,note,sort,' +
-      'product_flavors(name,price_override,sort),product_addons(name,price,sort)' +
+      'product_flavors(name,price_override,sort),product_addons(name,price,sort,flavor)' +
       '&active=is.true&order=sort';
     fetch(url, {
       headers: {
@@ -109,7 +109,7 @@
     const addons = (raw.product_addons || [])
       .slice()
       .sort((a, b) => (a.sort || 0) - (b.sort || 0))
-      .map((a) => ({ name: a.name, price: Number(a.price) }));
+      .map((a) => ({ name: a.name, price: Number(a.price), flavor: a.flavor || null }));
     return {
       id: raw.id,
       name: raw.name,
@@ -170,7 +170,11 @@
     });
 
     productSelect.addEventListener('change', () => syncRowProduct(row));
-    rowFlavor(row).addEventListener('change', () => refreshRowPrice(row));
+    rowFlavor(row).addEventListener('change', () => {
+      const p = productById(rowProduct(row).value);
+      if (p) renderRowAddons(row, p);
+      refreshRowPrice(row);
+    });
     rowQty(row).addEventListener('input', () => refreshRowPrice(row));
     row.querySelector('.oform-row__remove').addEventListener('click', () => {
       row.remove();
@@ -236,31 +240,36 @@
     refreshRowPrice(row);
   }
 
+  // Add-ons can be scoped to a flavor (a.flavor === null means whole product).
+  function applicableAddons(row, p) {
+    const flavor = rowFlavor(row).disabled ? null : rowFlavor(row).value;
+    return p.addons.filter((a) => a.flavor == null || a.flavor === flavor);
+  }
+
   function renderRowAddons(row, p) {
     const wrap = row.querySelector('.oform-row__addons');
     if (!wrap) return;
     wrap.textContent = '';
-    p.addons.forEach((a) => {
+    const list = applicableAddons(row, p);
+    list.forEach((a) => {
       const label = document.createElement('label');
       label.className = 'oform-addon';
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.value = a.name;
+      cb.dataset.price = String(a.price);
       cb.addEventListener('change', () => refreshRowPrice(row));
       label.appendChild(cb);
       label.appendChild(document.createTextNode(' Add ' + a.name + ' (+$' + money(a.price) + ')'));
       wrap.appendChild(label);
     });
-    wrap.hidden = p.addons.length === 0;
+    wrap.hidden = list.length === 0;
   }
 
   function rowAddonTotal(row) {
-    const p = productById(rowProduct(row).value);
-    if (!p || !p.addons.length) return 0;
     let sum = 0;
     row.querySelectorAll('.oform-row__addons input:checked').forEach((cb) => {
-      const a = p.addons.find((x) => x.name === cb.value);
-      if (a) sum += a.price;
+      sum += Number(cb.dataset.price) || 0;
     });
     return sum;
   }
