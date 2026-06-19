@@ -41,7 +41,7 @@ MENU = [
    ("Brownie Vanilla", "", "(Blueberries on top optional · +$5)", "$45", 25, "Not gluten free"),
    ("Raspberry Pistachio", "", "", "$45", 33),
    ("Lilikoi-Mango", "\U0001F96D", "", "$45", 23),
-   ("Chocolate Cherry", "\U0001F352", "", "$45", None),
+   ("Chocolate Cherry", "\U0001F352", "", "$45", 34),
  ]),
  ("NY Cookies",
   "Thick New York–style cookies, soft gooey centers and golden crispy edges · $7 each", [
