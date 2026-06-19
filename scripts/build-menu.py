@@ -52,9 +52,9 @@ MENU = [
  ]),
  ("Tartlets",
   "Crispy shell, creamy filling and that perfect not-too-sweet balance · $27 · box of 3", [
-   ("Tiramisu", "☕", "", "$27", 10),
-   ("Berry", "\U0001F353", "", "$27", 11),
-   ("Pistachio Raspberry", "\U0001F49A", "", "$27", 1),
+   ("Tiramisu", "☕", "", "$9 each", 10),
+   ("Berry", "\U0001F353", "", "$9 each", 11),
+   ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
  ]),
  ("Fruit Desserts", "Box of 7 · $70 ($10 each)", [
    ("Assorted Box", "\U0001F36B", "Crispy chocolate shell, smooth creamy ganache and a surprise center you won’t expect — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 9),
