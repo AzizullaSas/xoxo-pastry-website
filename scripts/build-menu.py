@@ -69,8 +69,11 @@ MENU = [
  ("Meringue Roll", "", [
    ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
  ]),
- ("Tiramisu", "", [
-   ("Tiramisu", "☕", "Classic Italian dessert made with layers of mascarpone cream and coffee-soaked savoiardi cookies", "Whole cake $70 · cup $8 / $9", 28),
+ ("Tiramisu", "Classic Italian — layers of mascarpone cream and coffee-soaked savoiardi", [
+   ("Whole Cake", "\U0001F370", "Serves 8–10", "$75", 36),
+   ("Classic Cup", "☕", "", "$8", None),
+   ("Strawberry Cup", "\U0001F353", "", "$9", 37),
+   ("Limoncello Cup", "\U0001F34B", "", "$9", 38),
  ]),
  ("Hawaiian Honey Cake", "", [
    ("Hawaiian Honey Cake", "\U0001F36F", "Delicate honey cake layers soaked in cream cheese frosting with rich house-made salted caramel", "$80", 18),
