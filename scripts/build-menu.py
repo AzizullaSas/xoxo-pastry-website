@@ -33,7 +33,7 @@ MENU = [
    ("Pistachio", "\U0001F49A", "", "$75", 24),
    ("Tiramisu", "☕", "", "$75", 22, "Not gluten free"),
    ("Lilikoi Mango", "\U0001F96D", "", "$80", 29),
-   ("Triple Chocolate", "\U0001F36B", "", "$70", 13),
+   ("Triple Chocolate", "\U0001F36B", "", "$70", 39),
  ]),
  ("Baby Basque Cheesecake",
   "Gluten-free · 6.3″ · serves 2–4 · $45 each", [
