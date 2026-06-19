@@ -5,7 +5,7 @@
 # Photo numbers refer to photo_<N>_*.jpg in that folder (1-29 original,
 # 30-33 = later flavor photos: red velvet / chocolate ice cream /
 # classic vanilla / raspberry pistachio).
-import sys, os, glob, html
+import sys, os, glob, html, hashlib
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 
 SRC = sys.argv[1]
@@ -98,7 +98,9 @@ def process_photo(num, slug):
     im = im.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
     out = os.path.join(OUTIMG, slug + ".jpg")
     im.save(out, "JPEG", quality=82, optimize=True)
-    return im.size
+    with open(out, "rb") as fh:
+        ver = hashlib.md5(fh.read()).hexdigest()[:8]
+    return (im.size[0], im.size[1], ver)  # cache-busting version = content hash
 
 def esc(s):
     return html.escape(s, quote=True)
@@ -121,9 +123,9 @@ for cat, sub, items in MENU:
         cls = "fcard reveal" + ("" if dims else " fcard--nophoto")
         lines.append(ind + '    <li class="%s">' % cls)
         if dims:
-            w, h = dims
+            w, h, ver = dims
             alt = esc("XOXO Pastry %s %s" % (name, cat.rstrip("s")))
-            lines.append(ind + '      <div class="fcard__media"><img src="images/menu/%s.jpg" alt="%s" width="%d" height="%d" loading="lazy" decoding="async"></div>' % (slug, alt, w, h))
+            lines.append(ind + '      <div class="fcard__media"><img src="images/menu/%s.jpg?v=%s" alt="%s" width="%d" height="%d" loading="lazy" decoding="async"></div>' % (slug, ver, alt, w, h))
         lines.append(ind + '      <div class="fcard__body">')
         nm = esc(name) + (' <span class="fcard__emoji">%s</span>' % emoji if emoji else "")
         lines.append(ind + '        <h4 class="fcard__name">%s</h4>' % nm)
