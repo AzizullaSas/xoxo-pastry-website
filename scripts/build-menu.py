@@ -56,8 +56,15 @@ MENU = [
    ("Berry", "\U0001F353", "", "$9 each", 11),
    ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
  ]),
- ("Fruit Desserts", "Box of 7 · $70 ($10 each)", [
-   ("Assorted Box", "\U0001F36B", "Crispy chocolate shell, smooth creamy ganache and a surprise center you won’t expect — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 9),
+ ("Fruit Desserts", "Box of 7 — $70, or single pieces — $10 each", [
+   ("Fruit Desserts Box", "\U0001F36B", "Crispy chocolate shell, smooth creamy ganache and a filling of your choice — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 35),
+   ("Coffee", "☕", "", "$10", None),
+   ("Mango", "\U0001F96D", "", "$10", None),
+   ("Raspberry", "\U0001F353", "", "$10", None),
+   ("Banana", "\U0001F34C", "", "$10", None),
+   ("Lilikoi", "\U0001F96D", "", "$10", None),
+   ("Pistachio", "\U0001F49A", "", "$10", None),
+   ("Blueberry", "\U0001FAD0", "", "$10", None),
  ]),
  ("Meringue Roll", "", [
    ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
