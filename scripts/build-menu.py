@@ -28,9 +28,9 @@ MENU = [
  ("Basque Cheesecake",
   "Gluten-free · Spanish-style, caramelized crust and soft, melt-in-your-mouth center · 8″ · serves 8–10", [
    ("Classic Vanilla", "", "", "$65", 32),
-   ("Matcha", "\U0001F375", "", "$65", 27),
+   ("Matcha", "\U0001F375", "", "$65", 40),
    ("Chocolate Ice Cream", "\U0001F368", "", "$65", 31),
-   ("Pistachio", "\U0001F49A", "", "$75", 24),
+   ("Pistachio", "\U0001F49A", "", "$75", 41),
    ("Tiramisu", "☕", "", "$75", 22, "Not gluten free"),
    ("Lilikoi Mango", "\U0001F96D", "", "$80", 29),
    ("Triple Chocolate", "\U0001F36B", "", "$70", 39),
