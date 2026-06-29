@@ -5,6 +5,13 @@
 -- the menu presents Basque / Baby Basque as distinct items.
 -- Per-flavor prices live in product_flavors.price_override.
 -- Applied to the project as migration `reseed_catalog_june_2026`.
+--
+-- NOTE: historical RECORD, not the live catalog. The live catalog
+-- (source of truth) has since drifted from this seed — e.g. Triple
+-- Chocolate removed from Signature, 'Lotus' -> 'Lotus Biscoff',
+-- tiramisu-cake is $75, the tiramisu cup gained a Limoncello flavor,
+-- and 0010 adds Fruit Desserts / Tartlets flavor choices. Always read
+-- the live products / product_flavors for the true catalog.
 -- ============================================================
 
 -- safe to wipe: no real orders reference the catalog (history is
