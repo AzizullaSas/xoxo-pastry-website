@@ -1006,6 +1006,82 @@ ul, ol { padding: 0; list-style: none; }
   max-width: 46ch;
 }
 
+/* --- deposit / payment step on the success panel --- */
+.oform__pay {
+  width: 100%;
+  margin-top: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+.oform__pay-amount {
+  max-width: none;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-size: clamp(1.2rem, 1vw + 1rem, 1.6rem);
+  color: var(--ink-brown);
+}
+.oform__pay-amount strong { color: var(--accent-rose-deep); }
+.oform__pay-methods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+.oform__pay-method {
+  flex: 1 1 12rem;
+  max-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1rem;
+  background: var(--bg-cream-soft);
+  border: 1px solid var(--gold-line-soft);
+  border-radius: var(--radius-card);
+}
+.oform__pay-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink-brown);
+}
+.oform__pay-qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9.5rem;
+  height: 9.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: var(--radius-soft);
+  box-shadow: var(--shadow-card);
+}
+.oform__pay-qr img { width: 100%; height: 100%; object-fit: contain; }
+.oform__pay-qr--link { transition: transform 180ms ease, box-shadow 180ms ease; }
+.oform__pay-qr--link:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+.oform__pay-handle {
+  max-width: none;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink-brown-soft);
+  word-break: break-word;
+}
+.oform__pay-handle strong { color: var(--ink-brown); word-break: break-all; }
+.oform__pay-handle a { color: var(--accent-rose-deep); font-weight: 600; }
+.oform__pay-wa { margin-top: 0.2rem; }
+.oform__pay-fine {
+  max-width: none;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 0.8rem;
+  color: var(--ink-brown-soft);
+}
+
 /* --- form shell --- */
 .oform__form {
   display: grid;

@@ -35,6 +35,9 @@
     els.success = document.getElementById('oform-success');
     els.successTitle = document.getElementById('oform-success-title');
     els.successText = document.getElementById('oform-success-text');
+    els.payAmount = document.getElementById('oform-pay-amount');
+    els.payNum = document.getElementById('oform-pay-num');
+    els.payWa = document.getElementById('oform-pay-wa');
     els.form = document.getElementById('order-form');
     els.rows = document.getElementById('oform-rows');
     els.add = document.getElementById('oform-add');
@@ -127,10 +130,16 @@
 
   function showSuccess(result) {
     els.form.hidden = true;
-    els.successTitle.textContent = 'Order #' + result.order_number + ' received!';
-    els.successText.textContent =
-      'We will text you shortly to confirm the details and the 20% deposit ($' +
-      money(Number(result.deposit_due) || 0) + ').';
+    var num = result.order_number;
+    var dep = '$' + money(Number(result.deposit_due) || 0);
+    els.successTitle.textContent = 'Order #' + num + ' received!';
+    if (els.payAmount) { els.payAmount.textContent = dep; }
+    if (els.payNum) { els.payNum.textContent = String(num); }
+    if (els.payWa) {
+      var msg = 'Hi! Order #' + num + ' — sending the ' + dep +
+        ' deposit now. Here is my payment screenshot:';
+      els.payWa.href = WHATSAPP_URL + '?text=' + encodeURIComponent(msg);
+    }
     els.success.hidden = false;
     els.successTitle.focus();
   }

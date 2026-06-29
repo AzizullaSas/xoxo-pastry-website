@@ -633,11 +633,40 @@
           <div class="oform__success" id="oform-success" hidden>
             <svg class="oform__heart" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg>
             <h3 class="oform__panel-title" id="oform-success-title" tabindex="-1">Order received!</h3>
-            <p id="oform-success-text">We will text you shortly to confirm the details and the 20% deposit.</p>
-            <a class="btn btn--ghost" href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">
-              <svg aria-hidden="true" focusable="false" width="18" height="18"><use href="#icon-whatsapp"/></svg>
-              Message us on WhatsApp
-            </a>
+            <p id="oform-success-text">To lock in your order, please send the <strong>20% deposit</strong> below, then share your payment screenshot with us on WhatsApp — we start baking as soon as we see it.</p>
+
+            <div class="oform__pay">
+              <p class="oform__pay-amount">Deposit to send: <strong id="oform-pay-amount">$0</strong></p>
+
+              <div class="oform__pay-methods">
+                <div class="oform__pay-method">
+                  <h4 class="oform__pay-name">Zelle</h4>
+                  <span class="oform__pay-qr">
+                    <img src="images/pay-zelle.png" alt="Zelle payment QR code for XOXO Pastry"
+                         width="205" height="207" loading="lazy" decoding="async">
+                  </span>
+                  <p class="oform__pay-handle">Send via Zelle to<br><strong>bondarenkoangelina778@gmail.com</strong></p>
+                </div>
+                <div class="oform__pay-method">
+                  <h4 class="oform__pay-name">Venmo</h4>
+                  <a class="oform__pay-qr oform__pay-qr--link" href="https://venmo.com/code?user_id=4457579606443062260"
+                     target="_blank" rel="noopener noreferrer">
+                    <img src="images/pay-venmo.png" alt="Venmo payment QR code for XOXO Pastry"
+                         width="274" height="266" loading="lazy" decoding="async">
+                  </a>
+                  <p class="oform__pay-handle">
+                    <a href="https://venmo.com/code?user_id=4457579606443062260" target="_blank" rel="noopener noreferrer">Tap to open Venmo &rarr;</a><br>Angelina Bondarenko
+                  </p>
+                </div>
+              </div>
+
+              <a class="btn btn--primary oform__pay-wa" id="oform-pay-wa"
+                 href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">
+                <svg aria-hidden="true" focusable="false" width="18" height="18"><use href="#icon-whatsapp"/></svg>
+                I paid &mdash; send my receipt
+              </a>
+              <p class="oform__pay-fine">Order #<span id="oform-pay-num">&mdash;</span> &middot; pickup details and the final total are confirmed with you on WhatsApp.</p>
+            </div>
           </div>
 
           <form class="oform__form" id="order-form" novalidate hidden>
