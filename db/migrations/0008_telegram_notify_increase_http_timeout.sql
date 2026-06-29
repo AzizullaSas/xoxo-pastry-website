@@ -1,0 +1,21 @@
+-- ============================================================
+-- XOXO Pastry — Telegram notify: raise the pg_net HTTP timeout.
+--
+-- Order #139's notification was lost: the TLS handshake from the
+-- database to api.telegram.org hung ~4979 ms and hit pg_net's
+-- DEFAULT 5000 ms timeout (net._http_response.error_msg:
+-- "Timeout of 5000 ms reached ... TCP/SSL handshake time: 4978 ms").
+-- net.http_post is async, so this does NOT slow order placement.
+--
+-- NOTE: this only adds `timeout_milliseconds` to the http_post call.
+-- A 15 s timeout proved insufficient on its own (the handshake can
+-- hang indefinitely), so this migration was SUPERSEDED by
+-- 0009_telegram_notify_retry_outbox.sql, which rewrites
+-- notify_telegram_order() into a retry/outbox design. Kept here for
+-- history; applied to the project as migration
+-- `telegram_notify_increase_http_timeout`.
+-- ============================================================
+
+-- (body identical to 0007's notify_telegram_order() with one change:
+--  the net.http_post call gained `timeout_milliseconds := 15000`.)
+-- Superseded — see 0009 for the function that is actually live.

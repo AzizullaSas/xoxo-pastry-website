@@ -39,7 +39,14 @@ Supabase email+password auth. Access is gated by the `is_admin()` SQL function c
 
 ## Telegram notifications
 
-[db/migrations/0007_telegram_notify.sql](db/migrations/0007_telegram_notify.sql): an `AFTER UPDATE` trigger fires when `place_order` writes the totals (`subtotal_estimate` goes `NULL → value`) and posts a formatted (Russian-language) order card to the XOXO Pastry Telegram group via the Bot API using `pg_net` (async, fire-and-forget — a failed send never rolls back the order). Admin status/deposit edits don't re-fire it. **Secrets (`telegram_bot_token`, `telegram_chat_id`) live in the `app_config` table, not in the repo** — that table has RLS on with no policies, so only `SECURITY DEFINER` functions can read it.
+[db/migrations/0007_telegram_notify.sql](db/migrations/0007_telegram_notify.sql): an `AFTER UPDATE` trigger (`orders_telegram_notify`) fires when `place_order` writes the totals (`subtotal_estimate` goes `NULL → value`) and posts a formatted (Russian-language) order card to the XOXO Pastry Telegram group via the Bot API using `pg_net` (async — a failed send never rolls back the order). Admin status/deposit edits don't re-fire it. **Secrets (`telegram_bot_token`, `telegram_chat_id`) live in the `app_config` table, not in the repo** — that table has RLS on with no policies, so only `SECURITY DEFINER` functions can read it.
+
+**Reliability / retry (0009).** The database→`api.telegram.org` TLS handshake via `pg_net` intermittently *hangs* until timeout (measured ~1 in 6; worse on the cold connections typical of spaced-out real orders), so a single fire-and-forget send silently loses notifications — and a bigger timeout doesn't help. [db/migrations/0009_telegram_notify_retry_outbox.sql](db/migrations/0009_telegram_notify_retry_outbox.sql) fixes this with a retry/outbox:
+- `orders` has `tg_request_id` / `tg_delivered` / `tg_attempts` / `tg_last_attempt`.
+- The trigger delegates to `tg_try_send(order_id)` (build message via `tg_order_message`, `net.http_post`, record the attempt) — instant send on the happy path.
+- A **pg_cron** job `telegram-retry-sweep` runs `tg_deliver_pending()` every minute: marks orders delivered once Telegram returns `200`, and re-sends the stalled ones (90 s after the prior attempt, up to 10 attempts). It **stops on the first 200 → no duplicates**.
+- New orders default `tg_delivered=false`; all pre-0009 orders were backfilled to `true` so the sweep only acts on new orders.
+- Debugging: `net._http_response` holds pg_net outcomes (status_code / error_msg) for recent requests — the place to see what Telegram actually returned. The whole notify path is `SECURITY DEFINER` with `EXECUTE` revoked from `anon`/`authenticated`.
 
 ## Database: migrations are a record, not the source of truth
 
