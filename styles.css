@@ -78,6 +78,7 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   font-size: var(--fs-body);
+  font-weight: 500;
   line-height: var(--lh-body);
   color: var(--ink-brown);
   background:
