@@ -36,7 +36,7 @@ MENU = [
    ("Triple Chocolate", "\U0001F36B", "", "$70", 39),
  ]),
  ("Baby Basque Cheesecake",
-  "Gluten-free · 6.3″ · serves 2–4 · $45 each", [
+  "Gluten-free · 6″ · serves 2–4 · $45 each", [
    ("Brownie Biscoff", "", "", "$45", 26, "Not gluten free"),
    ("Brownie Vanilla", "", "(Blueberries on top optional · +$5)", "$45", 25, "Not gluten free"),
    ("Raspberry Pistachio", "", "", "$45", 33),

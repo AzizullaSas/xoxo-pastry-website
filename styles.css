@@ -12,6 +12,7 @@
   --ink-brown-soft:   #6B4A38;
   --accent-rose:      #C7826F;
   --accent-rose-deep: #A85F4C;
+  --accent-rose-ink:  #9A5343;  /* darker rose: passes WCAG AA on cream / as button bg */
   --gold-line:        #C9A678;
   --gold-line-soft:   #E0C9A3;
   --shadow-warm:      0 18px 40px -24px rgba(74, 46, 31, 0.22);
@@ -144,7 +145,7 @@ ul, ol { padding: 0; list-style: none; }
   margin-top: 0.4rem;
   font-family: var(--font-script);
   font-size: var(--fs-tag);
-  color: var(--accent-rose);
+  color: var(--accent-rose-deep);
   line-height: 1.1;
 }
 
@@ -327,12 +328,12 @@ ul, ol { padding: 0; list-style: none; }
   white-space: nowrap;
 }
 .btn--primary {
-  background: var(--accent-rose);
+  background: var(--accent-rose-deep);
   color: #fff;
   box-shadow: 0 12px 26px -14px rgba(168, 95, 76, 0.6);
 }
 .btn--primary:hover {
-  background: var(--accent-rose-deep);
+  background: var(--accent-rose-ink);
   color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 16px 32px -14px rgba(168, 95, 76, 0.7);
@@ -417,7 +418,7 @@ ul, ol { padding: 0; list-style: none; }
   font-size: clamp(0.78rem, 0.4vw + 0.7rem, 0.95rem);
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-rose);
+  color: var(--accent-rose-ink);
 }
 .hero__tagline {
   margin-top: var(--space-1);
@@ -469,7 +470,7 @@ ul, ol { padding: 0; list-style: none; }
   font-size: 0.85rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-rose);
+  color: var(--accent-rose-ink);
   margin-bottom: var(--space-2);
 }
 .about p {
@@ -647,7 +648,7 @@ ul, ol { padding: 0; list-style: none; }
   margin-top: var(--space-4);
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--accent-rose);
+  color: var(--accent-rose-ink);
   font-size: 1.1rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1201,51 +1202,6 @@ ul, ol { padding: 0; list-style: none; }
 .oform-row__error { grid-area: error; margin-top: 0; }
 .oform__add { margin-top: var(--space-3); }
 
-/* --- radio pills (Pickup / Delivery) --- */
-.oform__pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-.oform__pill {
-  position: relative;
-  display: inline-flex;
-}
-.oform__pill input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.oform__pill span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0.6rem 1.6rem;
-  border-radius: 999px;
-  border: 1px solid var(--gold-line);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-  color: var(--ink-brown);
-  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
-}
-.oform__pill:hover span { background: rgba(201, 166, 120, 0.12); }
-.oform__pill input:checked + span {
-  background: var(--accent-rose);
-  border-color: var(--accent-rose);
-  color: #fff;
-  box-shadow: 0 12px 26px -14px rgba(168, 95, 76, 0.6);
-}
-.oform__pill input:focus-visible + span {
-  outline: 2px solid var(--accent-rose-deep);
-  outline-offset: 3px;
-}
-
 /* --- field groups --- */
 .oform__grid {
   display: grid;
@@ -1294,10 +1250,6 @@ ul, ol { padding: 0; list-style: none; }
       "product product qty price remove"
       "addons  addons  addons addons addons"
       "error   error   error error error";
-  }
-  .oform__grid--when {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
   }
   .oform__grid--contact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

@@ -152,6 +152,8 @@
     labelField(row, '.oform-row__flavor', idBase + '-flavor');
     labelField(row, '.oform-row__qty', idBase + '-qty');
     row.querySelector('.oform-row__error').id = idBase + '-error';
+    // tie the row's qty input to its error message so screen readers announce it
+    rowQty(row).setAttribute('aria-describedby', idBase + '-error');
 
     const productSelect = rowProduct(row);
     products.forEach((p) => {
@@ -514,6 +516,7 @@
       case 'UNKNOWN_PRODUCT':
       case 'FLAVOR_REQUIRED':
       case 'BAD_FLAVOR':
+      case 'BAD_ADDON':
         formError(MENU_CHANGED_MSG, false);
         break;
       case 'BAD_TEXT':

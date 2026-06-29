@@ -7,6 +7,7 @@
 
   /* ---------- constants ---------- */
 
+  var ORDER_LIMIT = 1000;
   var STATUSES = ['new', 'confirmed', 'in_progress', 'ready', 'completed', 'cancelled'];
   var STATUS_LABELS = {
     new: 'New',
@@ -317,13 +318,16 @@
     sb.from('orders')
       .select('*, order_items(*)')
       .order('needed_date', { ascending: true })
-      .limit(500)
+      .limit(ORDER_LIMIT)
       .then(function (res) {
         state.loading = false;
         if (res.error) {
           state.loadError = CONNECT_MSG;
         } else {
           state.orders = res.data || [];
+          if (state.orders.length >= ORDER_LIMIT) {
+            toast('Showing the first ' + ORDER_LIMIT + ' orders by date — older ones are not loaded.');
+          }
         }
         renderDashboard();
       }, function () {
@@ -345,6 +349,8 @@
           Object.keys(revert).forEach(function (k) { order[k] = revert[k]; });
           renderDashboard();
           toast(what + ' for #' + order.order_number + ' was not saved. Please try again.');
+        } else {
+          toast(what + ' for #' + order.order_number + ' saved.');
         }
       }, function () {
         Object.keys(revert).forEach(function (k) { order[k] = revert[k]; });
@@ -587,6 +593,7 @@
     if (focusKey) {
       var target = listEl.querySelector('[data-fkey="' + focusKey + '"]');
       if (target) { target.focus(); }
+      else if (searchInput) { searchInput.focus(); } // card left the view: don't strand focus on <body>
     }
   }
 
