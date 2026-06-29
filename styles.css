@@ -1049,6 +1049,7 @@ ul, ol { padding: 0; list-style: none; }
   padding: 0.65em 0.8em;
   font-family: var(--font-body);
   font-size: 1.05rem;
+  font-weight: 500;
   color: var(--ink-brown);
   background: var(--bg-cream-soft);
   border: 1px solid var(--gold-line-soft);
