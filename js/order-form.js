@@ -39,7 +39,8 @@
     els.rows = document.getElementById('oform-rows');
     els.add = document.getElementById('oform-add');
     els.rowTemplate = document.getElementById('oform-row-template');
-    els.date = document.getElementById('oform-date');
+    els.date = document.getElementById('oform-date');       // hidden value (YYYY-MM-DD), driven by datepicker.js
+    els.dateBtn = document.getElementById('oform-date-btn'); // visible trigger — where date errors are shown
     els.name = document.getElementById('oform-name');
     els.phone = document.getElementById('oform-phone');
     els.instagram = document.getElementById('oform-instagram');
@@ -432,9 +433,9 @@
     });
 
     if (!payload.needed_date) {
-      mark(fieldError(els.date, document.getElementById('oform-date-error'), 'Please pick a date.'));
+      mark(fieldError(els.dateBtn, document.getElementById('oform-date-error'), 'Please pick a date.'));
     } else if (payload.needed_date < els.date.min) {
-      mark(fieldError(els.date, document.getElementById('oform-date-error'),
+      mark(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
         'We need at least 1 day notice (Hawaii time).'));
     }
 
@@ -493,15 +494,15 @@
           'Please enter a valid phone number.'));
         break;
       case 'BAD_DATE':
-        focusError(fieldError(els.date, document.getElementById('oform-date-error'),
+        focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
           'Please pick a valid date.'));
         break;
       case 'DATE_TOO_SOON':
-        focusError(fieldError(els.date, document.getElementById('oform-date-error'),
+        focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
           'We need at least 1 day notice (Hawaii time).'));
         break;
       case 'DATE_TOO_FAR':
-        focusError(fieldError(els.date, document.getElementById('oform-date-error'),
+        focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
           'Please pick a date within the next year.'));
         break;
       case 'BAD_QTY':

@@ -648,10 +648,20 @@
               <button type="button" class="btn btn--ghost oform__add" id="oform-add">+ Add another dessert</button>
             </fieldset>
 
-            <div class="oform__field">
-              <label class="oform__label" for="oform-date">Date needed</label>
-              <input class="oform__input" type="date" id="oform-date" name="needed_date" required
-                     aria-describedby="oform-date-help oform-date-error">
+            <div class="oform__field oform__datefield">
+              <label class="oform__label" for="oform-date-btn">Date needed</label>
+              <button type="button" class="oform__input oform__datebtn" id="oform-date-btn"
+                      aria-haspopup="dialog" aria-expanded="false"
+                      aria-describedby="oform-date-help oform-date-error">
+                <span class="oform__datebtn-text oform__datebtn-text--empty" id="oform-date-text">Choose a date</span>
+                <svg class="oform__datebtn-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M7 2.5v3M17 2.5v3M3.75 9.5h16.5M5.5 4.5h13a2 2 0 0 1 2 2V19a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"
+                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <input type="hidden" id="oform-date" name="needed_date">
+              <div class="oform__cal" id="oform-cal" role="dialog" aria-modal="false"
+                   aria-label="Choose the date you need your order" hidden></div>
               <p class="oform__help" id="oform-date-help">Minimum 1 day ahead (Hawaii time)</p>
               <p class="oform__error" id="oform-date-error" hidden></p>
             </div>
@@ -787,5 +797,6 @@
   <script src="script.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/order-form.js" defer></script>
+  <script src="js/datepicker.js" defer></script>
 </body>
 </html>

@@ -1100,6 +1100,114 @@ ul, ol { padding: 0; list-style: none; }
   line-height: 1.5;
 }
 .oform__notice strong { color: var(--ink-brown); }
+
+/* --- custom date picker --- */
+.oform__datefield { position: relative; }
+.oform__datebtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+}
+.oform__datebtn:hover { border-color: var(--gold-line); }
+.oform__datebtn[aria-expanded="true"] { border-color: var(--accent-rose-deep); }
+.oform__datebtn-text--empty {
+  color: var(--ink-brown-soft);
+  opacity: 0.7;
+  font-style: italic;
+}
+.oform__datebtn-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  color: var(--accent-rose-deep);
+}
+.oform__cal {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 18rem;
+  max-width: calc(100vw - 3rem);
+  padding: 0.9rem 1rem 1rem;
+  background: var(--bg-cream-soft);
+  border: 1px solid var(--gold-line-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-warm);
+}
+.oform__cal[hidden] { display: none; }
+.oform__cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+.oform__cal-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink-brown);
+}
+.oform__cal-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--accent-rose-deep);
+  background: transparent;
+  border: 1px solid var(--gold-line-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+.oform__cal-nav:hover { background: rgba(199, 130, 111, 0.12); border-color: var(--gold-line); }
+.oform__cal-nav:disabled { opacity: 0.3; cursor: default; background: transparent; }
+.oform__cal-week,
+.oform__cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+.oform__cal-wd {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-brown-soft);
+  padding-bottom: 0.35rem;
+}
+.oform__cal-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.3rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--ink-brown);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-soft);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+.oform__cal-day:hover { background: rgba(199, 130, 111, 0.14); }
+.oform__cal-day:focus-visible { outline: 2px solid var(--accent-rose-deep); outline-offset: 1px; }
+.oform__cal-day:disabled { color: var(--ink-brown-soft); opacity: 0.3; cursor: default; background: transparent; }
+.oform__cal-day.is-selected {
+  background: var(--accent-rose-deep);
+  border-color: var(--accent-rose-deep);
+  color: #fff;
+  box-shadow: 0 8px 18px -10px rgba(168, 95, 76, 0.7);
+}
+.oform__cal-day.is-selected:hover { background: var(--accent-rose-ink); }
 .oform__error {
   margin-top: 0.45rem;
   font-family: var(--font-ui);
