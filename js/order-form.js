@@ -40,8 +40,6 @@
     els.add = document.getElementById('oform-add');
     els.rowTemplate = document.getElementById('oform-row-template');
     els.date = document.getElementById('oform-date');
-    els.addressWrap = document.getElementById('oform-address-wrap');
-    els.address = document.getElementById('oform-address');
     els.name = document.getElementById('oform-name');
     els.phone = document.getElementById('oform-phone');
     els.instagram = document.getElementById('oform-instagram');
@@ -65,14 +63,6 @@
   function wireEvents() {
     els.add.addEventListener('click', () => addRow());
     els.form.addEventListener('submit', onSubmit);
-    const radios = els.form.querySelectorAll('input[name="fulfillment"]');
-    radios.forEach((radio) => radio.addEventListener('change', syncFulfillment));
-  }
-
-  function syncFulfillment() {
-    const delivery = els.form.elements.fulfillment.value === 'delivery';
-    els.addressWrap.hidden = !delivery;
-    els.address.required = delivery;
   }
 
   function loadCatalog(cfg) {
@@ -132,7 +122,6 @@
     els.loading.hidden = true;
     els.form.hidden = false;
     addRow();
-    syncFulfillment();
   }
 
   function showSuccess(result) {
@@ -400,11 +389,10 @@
   }
 
   function collectPayload() {
-    const fulfillment = els.form.elements.fulfillment.value;
     const payload = {
       customer_name: els.name.value.trim(),
       customer_phone: els.phone.value.trim(),
-      fulfillment,
+      fulfillment: 'pickup',
       needed_date: els.date.value,
       items: rowList().map((row) => {
         const item = {
@@ -420,7 +408,6 @@
     };
     const contact = els.instagram.value.trim();
     if (contact) payload.customer_contact = contact;
-    if (fulfillment === 'delivery') payload.delivery_address = els.address.value.trim();
     const notes = els.notes.value.trim();
     if (notes) payload.notes = notes;
     return payload;
@@ -447,11 +434,6 @@
     } else if (payload.needed_date < els.date.min) {
       mark(fieldError(els.date, document.getElementById('oform-date-error'),
         'We need at least 1 day notice (Hawaii time).'));
-    }
-
-    if (payload.fulfillment === 'delivery' && !payload.delivery_address) {
-      mark(fieldError(els.address, document.getElementById('oform-address-error'),
-        'Please add a delivery address.'));
     }
 
     if (!payload.customer_name) {
@@ -507,11 +489,6 @@
       case 'BAD_PHONE':
         focusError(fieldError(els.phone, document.getElementById('oform-phone-error'),
           'Please enter a valid phone number.'));
-        break;
-      case 'DELIVERY_NEEDS_ADDRESS':
-        els.addressWrap.hidden = false;
-        focusError(fieldError(els.address, document.getElementById('oform-address-error'),
-          'Please add a delivery address.'));
         break;
       case 'BAD_DATE':
         focusError(fieldError(els.date, document.getElementById('oform-date-error'),

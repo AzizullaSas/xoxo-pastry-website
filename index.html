@@ -646,38 +646,19 @@
               <button type="button" class="btn btn--ghost oform__add" id="oform-add">+ Add another dessert</button>
             </fieldset>
 
-            <div class="oform__grid oform__grid--when">
-              <div class="oform__field">
-                <label class="oform__label" for="oform-date">Date needed</label>
-                <input class="oform__input" type="date" id="oform-date" name="needed_date" required
-                       aria-describedby="oform-date-help oform-date-error">
-                <p class="oform__help" id="oform-date-help">Minimum 1 day ahead (Hawaii time)</p>
-                <p class="oform__error" id="oform-date-error" hidden></p>
-              </div>
-
-              <fieldset class="oform__field">
-                <legend class="oform__label">Pickup or delivery</legend>
-                <div class="oform__pills">
-                  <label class="oform__pill">
-                    <input type="radio" name="fulfillment" value="pickup" checked>
-                    <span>Pickup</span>
-                  </label>
-                  <label class="oform__pill">
-                    <input type="radio" name="fulfillment" value="delivery">
-                    <span>Delivery</span>
-                  </label>
-                </div>
-              </fieldset>
+            <div class="oform__field">
+              <label class="oform__label" for="oform-date">Date needed</label>
+              <input class="oform__input" type="date" id="oform-date" name="needed_date" required
+                     aria-describedby="oform-date-help oform-date-error">
+              <p class="oform__help" id="oform-date-help">Minimum 1 day ahead (Hawaii time)</p>
+              <p class="oform__error" id="oform-date-error" hidden></p>
             </div>
 
-            <div class="oform__field" id="oform-address-wrap" hidden>
-              <label class="oform__label" for="oform-address">Delivery address</label>
-              <input class="oform__input" type="text" id="oform-address" name="delivery_address"
-                     autocomplete="street-address" maxlength="400"
-                     aria-describedby="oform-address-help oform-address-error">
-              <p class="oform__help" id="oform-address-help">Delivery fee depends on location &mdash; we will confirm it with you.</p>
-              <p class="oform__error" id="oform-address-error" hidden></p>
-            </div>
+            <p class="oform__notice">
+              All orders are <strong>pickup</strong>. Need delivery?
+              <a href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a>
+              and we&rsquo;ll arrange the details and any fee together.
+            </p>
 
             <div class="oform__grid oform__grid--contact">
               <div class="oform__field">
@@ -714,7 +695,7 @@
               <p class="oform__total" id="oform-total">Estimated total $0 &middot; 20% deposit $0 confirms your order</p>
               <p class="oform__error oform__error--form" id="oform-form-error" hidden></p>
             </div>
-            <p class="oform__help oform__help--center">Final total and any delivery fee are confirmed personally before we bake.</p>
+            <p class="oform__help oform__help--center">Final total is confirmed personally before we bake.</p>
 
             <div class="oform__actions">
               <button type="submit" class="btn btn--primary btn--lg oform__submit" id="oform-submit">Place order</button>
