@@ -44,11 +44,11 @@ MENU = [
    ("Chocolate Cherry", "\U0001F352", "", "$45", 34),
  ]),
  ("NY Cookies",
-  "Thick New York–style cookies, soft gooey centers and golden crispy edges · $7 each", [
-   ("Pistachio", "\U0001F49A", "", "$7", 6),
-   ("Nutella", "\U0001F36B", "", "$7", 8),
-   ("Red Velvet", "❤️", "", "$7", 30),
-   ("Lotus Biscoff", "\U0001F49B", "", "$7", 7),
+  "Thick New York–style cookies, soft gooey centers and golden crispy edges · $8 each", [
+   ("Pistachio", "\U0001F49A", "", "$8", 6),
+   ("Nutella", "\U0001F36B", "", "$8", 8),
+   ("Red Velvet", "❤️", "", "$8", 30),
+   ("Lotus Biscoff", "\U0001F49B", "", "$8", 7),
  ]),
  ("Tartlets",
   "Crispy shell, creamy filling and that perfect not-too-sweet balance · $27 · box of 3", [
