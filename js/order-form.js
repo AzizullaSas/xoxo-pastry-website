@@ -6,7 +6,8 @@
   'use strict';
 
   const WHATSAPP_URL = 'https://wa.me/19167799058';
-  const MAX_ROWS = 10;
+  // One row = one flavor, so a mixed box of 7 fruit desserts already costs 7 rows.
+  const MAX_ROWS = 14;
   const PHONE_RE = /^[0-9+() .\-]{7,24}$/;
   const NETWORK_MSG = 'We could not send your order. Please try again, or';
   const RATE_MSG = 'Looks like several orders came from this number today.' +
@@ -107,6 +108,7 @@
     return {
       id: raw.id,
       name: raw.name,
+      note: raw.note || '',
       basePrice: Number(raw.base_price),
       minQty: Math.max(1, parseInt(raw.min_qty, 10) || 1),
       flavors,
@@ -213,7 +215,9 @@
   function productOptionLabel(p) {
     if (!p.flavors.length) return p.name + ' — $' + money(p.basePrice);
     const lowest = p.flavors.reduce((min, f) => Math.min(min, f.price), Infinity);
-    return p.name + ' — from $' + money(lowest);
+    const highest = p.flavors.reduce((max, f) => Math.max(max, f.price), -Infinity);
+    // "from" only when the flavors actually differ in price
+    return p.name + (lowest === highest ? ' — $' : ' — from $') + money(lowest);
   }
 
   function flavorOptionLabel(p, flavor) {
@@ -233,12 +237,24 @@
     flavorSelect.disabled = !hasFlavors;
     flavorSelect.required = hasFlavors;
 
+    const note = row.querySelector('.oform-row__note');
+    if (note) {
+      note.textContent = p.note;
+      note.hidden = !p.note;
+    }
+
+    // Minimums are counted over the whole order (see validate), so only the first
+    // row of a product starts at its minimum — extra flavor rows start at 1.
     const qty = rowQty(row);
-    qty.min = String(p.minQty);
-    qty.value = String(p.minQty);
+    qty.min = '1';
+    qty.value = String(hasOtherRowFor(row, p) ? 1 : p.minQty);
 
     renderRowAddons(row, p);
     refreshRowPrice(row);
+  }
+
+  function hasOtherRowFor(row, p) {
+    return rowList().some((r) => r !== row && rowProduct(r).value === p.id);
   }
 
   // Add-ons can be scoped to a flavor (a.flavor === null means whole product).
@@ -302,6 +318,35 @@
       row.querySelector('.oform-row__remove').hidden = rows.length === 1;
     });
     els.add.hidden = rows.length >= MAX_ROWS;
+  }
+
+  /* ---------- per-product quantities ---------- */
+
+  // product id -> { product, qty (summed over every row), row (its first row) }.
+  // Quantity limits are checked against these totals, never against a single row.
+  function productTotals() {
+    const totals = new Map();
+    rowList().forEach((row) => {
+      const p = productById(rowProduct(row).value);
+      if (!p) return;
+      const entry = totals.get(p.id) || { product: p, qty: 0, row: row };
+      const qty = parseInt(rowQty(row).value, 10);
+      if (Number.isInteger(qty) && qty > 0) entry.qty += qty;
+      totals.set(p.id, entry);
+    });
+    return totals;
+  }
+
+  function minQtyMessage(p) {
+    const msg = 'Minimum ' + p.minQty + ' ' + p.name + ' per order';
+    return p.flavors.length > 1
+      ? msg + ' — mix as many flavors as you like, just add a row for each.'
+      : msg + '.';
+  }
+
+  function maxQtyMessage(p) {
+    return 'Maximum 200 ' + p.name +
+      ' per order — for bigger orders, message us on WhatsApp.';
   }
 
   /* ---------- summary ---------- */
@@ -431,13 +476,20 @@
     const mark = (control) => { firstInvalid = firstInvalid || control; };
 
     rowList().forEach((row) => {
-      const p = productById(rowProduct(row).value);
       const qty = parseInt(rowQty(row).value, 10);
-      if (!p) return;
-      if (!Number.isInteger(qty) || qty < p.minQty) {
-        mark(rowError(row, 'Minimum ' + p.minQty + ' for ' + p.name + '.'));
-      } else if (qty > 200) {
-        mark(rowError(row, 'Maximum 200 for ' + p.name + ' — for bigger orders, message us on WhatsApp.'));
+      if (!productById(rowProduct(row).value)) return;
+      if (!Number.isInteger(qty) || qty < 1) {
+        mark(rowError(row, 'Please enter how many you would like.'));
+      }
+    });
+
+    // Minimums apply to the product across the whole order, not to each row, so
+    // four cookies split over four flavors (four rows of 1) is a valid order.
+    productTotals().forEach((entry) => {
+      if (entry.qty < entry.product.minQty) {
+        mark(rowError(entry.row, minQtyMessage(entry.product)));
+      } else if (entry.qty > 200) {
+        mark(rowError(entry.row, maxQtyMessage(entry.product)));
       }
     });
 
@@ -515,7 +567,10 @@
           'Please pick a date within the next year.'));
         break;
       case 'BAD_QTY':
-        handleBadQty(body.hint);
+        handleQtyError(body.hint, minQtyMessage);
+        break;
+      case 'QTY_TOO_MANY':
+        handleQtyError(body.hint, maxQtyMessage);
         break;
       case 'NO_ITEMS':
         formError('Please add at least one dessert.', false);
@@ -540,11 +595,12 @@
     }
   }
 
-  function handleBadQty(productId) {
+  // The RPC reports the offending product in `hint`; show the message on its first row.
+  function handleQtyError(productId, message) {
     const row = rowList().find((r) => rowProduct(r).value === productId);
     const p = productById(productId);
     if (row && p) {
-      focusError(rowError(row, 'Minimum ' + p.minQty + ' for ' + p.name + '.'));
+      focusError(rowError(row, message(p)));
     } else {
       formError('Please check the quantities and try again.', false);
     }

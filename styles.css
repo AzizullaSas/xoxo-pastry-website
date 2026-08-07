@@ -1309,6 +1309,7 @@ ul, ol { padding: 0; list-style: none; }
   grid-template-areas:
     "product product product"
     "flavor  flavor  flavor"
+    "note    note    note"
     "addons  addons  addons"
     "qty     price   remove"
     "error   error   error";
@@ -1319,6 +1320,7 @@ ul, ol { padding: 0; list-style: none; }
 .oform-row--noflavor {
   grid-template-areas:
     "product product product"
+    "note    note    note"
     "addons  addons  addons"
     "qty     price   remove"
     "error   error   error";
@@ -1350,6 +1352,8 @@ ul, ol { padding: 0; list-style: none; }
 .oform-row__product { grid-area: product; }
 .oform-row__flavor  { grid-area: flavor; }
 .oform-row__qty     { grid-area: qty; }
+.oform-row__note    { grid-area: note; margin-top: 0; }
+.oform-row__note[hidden] { display: none; }
 .oform-row__price {
   grid-area: price;
   align-self: end;
@@ -1426,12 +1430,14 @@ ul, ol { padding: 0; list-style: none; }
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr) 6.5rem minmax(4.5rem, auto) 48px;
     grid-template-areas:
       "product flavor qty price remove"
+      "note    note   note note  note"
       "addons  addons addons addons addons"
       "error   error  error error error";
   }
   .oform-row--noflavor {
     grid-template-areas:
       "product product qty price remove"
+      "note    note    note note note"
       "addons  addons  addons addons addons"
       "error   error   error error error";
   }
