@@ -44,7 +44,7 @@ MENU = [
    ("Chocolate Cherry", "\U0001F352", "", "$45", 34),
  ]),
  ("NY Cookies",
-  "Thick New York–style cookies, soft gooey centers and golden crispy edges · $8 each", [
+  "Thick New York–style cookies, soft gooey centers and golden crispy edges · $8 each, or a box of 4 for $32", [
    ("Pistachio", "\U0001F49A", "", "$8", 6),
    ("Nutella", "\U0001F36B", "", "$8", 8),
    ("Red Velvet", "❤️", "", "$8", 30),
