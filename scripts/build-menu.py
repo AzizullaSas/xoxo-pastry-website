@@ -4,7 +4,12 @@
 #   py scripts/build-menu.py "C:\Users\User\Desktop\Меню XOXO PASTRY"
 # Photo numbers refer to photo_<N>_*.jpg in that folder (1-29 original,
 # 30-33 = later flavor photos: red velvet / chocolate ice cream /
-# classic vanilla / raspberry pistachio).
+# classic vanilla / raspberry pistachio). A photo given as a name instead
+# of a number refers to <name>.* in that folder (fruit dessert flavors).
+# A photo missing from the folder falls back to the already-processed
+# images/menu/<slug>.jpg, so only new photos need to be on hand. Rename new
+# photos before pointing the script at them: a fresh Telegram export is also
+# named photo_<N>_*.jpg and would overwrite the numbered photos above.
 import sys, os, glob, html, hashlib
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 
@@ -13,7 +18,7 @@ OUTIMG = "images/menu"
 os.makedirs(OUTIMG, exist_ok=True)
 
 # Each category: (title, sub, items)
-# item: (name, emoji, desc, price, photo_number_or_None)
+# item: (name, emoji, desc, price, photo_number_or_name_or_None[, note])
 MENU = [
  ("Signature Cheesecakes",
   "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
@@ -56,15 +61,19 @@ MENU = [
    ("Berry", "\U0001F353", "", "$9 each", 11),
    ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
  ]),
- ("Fruit Desserts", "Box of 7 — $70, or single pieces — $8–$12 each", [
-   ("Fruit Desserts Box", "\U0001F36B", "Crispy chocolate shell, smooth creamy ganache and a filling of your choice — Coffee, Mango, Raspberry, Banana, Lilikoi, Pistachio, Blueberry", "$70", 35),
-   ("Coffee", "☕", "", "$10", None),
-   ("Mango", "\U0001F96D", "", "$10", None),
-   ("Raspberry", "\U0001F353", "", "$10", None),
-   ("Banana", "\U0001F34C", "", "$10", None),
-   ("Lilikoi", "\U0001F96D", "", "$8", None),
-   ("Pistachio", "\U0001F49A", "", "$12", None),
-   ("Blueberry", "\U0001FAD0", "", "$10", None),
+ ("Fruit Desserts",
+  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 7 — $70, or single pieces — $8–$12 each", [
+   ("Fruit Desserts Box", "\U0001F36B", "Seven desserts in one box — one flavor for the whole box, or let us make it assorted", "$70", 35),
+   ("Chocolate Cherry", "\U0001F352", "Silky milk chocolate ganache with a juicy cherry center", "$10", "fruit-chocolate-cherry"),
+   ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
+   ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),
+   ("Coffee Caramel", "☕", "Smooth coffee ganache with rich brownie and gooey caramel", "$10", "fruit-coffee-caramel"),
+   ("Raspberry", "\U0001F353", "Raspberry ganache with a vibrant fresh raspberry purée center", "$10", "fruit-raspberry"),
+   ("Blueberry", "\U0001FAD0", "Creamy ganache with a fresh blueberry purée center", "$10", "fruit-blueberry"),
+   ("Lilikoi", "\U0001F33A", "Creamy ganache with a sweet-tart lilikoi (passion fruit) confit", "$8", "fruit-lilikoi"),
+   ("Pistachio", "\U0001F49A", "Pistachio ganache, a crunchy pistachio layer and tender pistachio sponge", "$12", "fruit-pistachio"),
+   ("Banana", "\U0001F34C", "Banana ganache with chocolate waffle crunch and a passion fruit crémeux", "$10", "fruit-banana"),
+   ("Mango", "\U0001F96D", "Mango ganache with juicy mango pieces and mango purée", "$10", "fruit-mango"),
  ]),
  ("Meringue Roll", "", [
    ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
@@ -84,23 +93,34 @@ def slugify(cat, name):
     base = (cat.split()[0] + "-" + name).lower()
     return "".join(c if c.isalnum() else "-" for c in base).strip("-").replace("--", "-")
 
-def process_photo(num, slug):
-    matches = glob.glob(os.path.join(SRC, "photo_%d_*.jpg" % num))
-    if not matches:
-        print("MISSING", num); return None
-    im = ImageOps.exif_transpose(Image.open(matches[0])).convert("RGB")
-    w, h = im.size
-    s = min(1.0, 1000.0 / max(w, h))
-    if s < 1.0:
-        im = im.resize((round(w * s), round(h * s)), Image.LANCZOS)
-    im = ImageEnhance.Color(im).enhance(1.05)
-    im = ImageEnhance.Contrast(im).enhance(1.03)
-    im = im.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
+def find_source(photo):
+    pattern = ("photo_%d_*.jpg" % photo) if isinstance(photo, int) else (photo + ".*")
+    matches = glob.glob(os.path.join(SRC, pattern))
+    return matches[0] if matches else None
+
+def process_photo(photo, slug):
     out = os.path.join(OUTIMG, slug + ".jpg")
-    im.save(out, "JPEG", quality=82, optimize=True)
+    src = find_source(photo)
+    if src:
+        im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
+        w, h = im.size
+        s = min(1.0, 1000.0 / max(w, h))
+        if s < 1.0:
+            im = im.resize((round(w * s), round(h * s)), Image.LANCZOS)
+        im = ImageEnhance.Color(im).enhance(1.05)
+        im = ImageEnhance.Contrast(im).enhance(1.03)
+        im = im.filter(ImageFilter.UnsharpMask(radius=2, percent=60, threshold=2))
+        im.save(out, "JPEG", quality=82, optimize=True)
+        size = im.size
+    elif os.path.exists(out):
+        # reuse the processed image as-is; processing it again would sharpen it twice
+        with Image.open(out) as im:
+            size = im.size
+    else:
+        print("MISSING", photo); return None
     with open(out, "rb") as fh:
         ver = hashlib.md5(fh.read()).hexdigest()[:8]
-    return (im.size[0], im.size[1], ver)  # cache-busting version = content hash
+    return (size[0], size[1], ver)  # cache-busting version = content hash
 
 def esc(s):
     return html.escape(s, quote=True)
