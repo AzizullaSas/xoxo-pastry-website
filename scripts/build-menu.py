@@ -62,8 +62,8 @@ MENU = [
    ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
  ]),
  ("Fruit Desserts",
-  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 7 — $100, or single pieces — $8–$12 each", [
-   ("Fruit Desserts Box", "\U0001F36B", "Seven desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
+  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 10 — $100, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
+   ("Fruit Desserts Box", "\U0001F36B", "Ten desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
    ("Chocolate Cherry", "\U0001F352", "Silky milk chocolate ganache with a juicy cherry center", "$10", "fruit-chocolate-cherry"),
    ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
    ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),

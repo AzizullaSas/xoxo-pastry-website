@@ -6,7 +6,7 @@
   'use strict';
 
   const WHATSAPP_URL = 'https://wa.me/19167799058';
-  // One row = one flavor, so a mixed box of 7 fruit desserts already costs 7 rows.
+  // One row = one flavor, so a mixed box of 10 fruit desserts already costs 10 rows.
   const MAX_ROWS = 14;
   const PHONE_RE = /^[0-9+() .\-]{7,24}$/;
   const NETWORK_MSG = 'We could not send your order. Please try again, or';
