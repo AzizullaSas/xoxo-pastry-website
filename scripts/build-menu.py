@@ -32,7 +32,7 @@ MENU = [
  ]),
  ("Basque Cheesecake",
   "Gluten-free · Spanish-style, caramelized crust and soft, melt-in-your-mouth center · 8″ · serves 8–10", [
-   ("Classic Vanilla", "", "", "$65", 32),
+   ("Classic Vanilla", "", "Served with milk chocolate and a brownie base. If you’d prefer it without, just let us know!", "$65", 32),
    ("Matcha", "\U0001F375", "", "$65", 40),
    ("Chocolate Ice Cream", "\U0001F368", "", "$65", 31),
    ("Pistachio", "\U0001F49A", "", "$75", 41),
