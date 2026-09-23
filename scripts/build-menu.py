@@ -20,6 +20,27 @@ os.makedirs(OUTIMG, exist_ok=True)
 # Each category: (title, sub, items)
 # item: (name, emoji, desc, price, photo_number_or_name_or_None[, note])
 MENU = [
+ ("Fruit Desserts",
+  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 10 — $100, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
+   ("Fruit Desserts Box", "\U0001F36B", "Ten desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
+   ("Chocolate Cherry", "\U0001F352", "Silky milk chocolate ganache with a juicy cherry center", "$10", "fruit-chocolate-cherry"),
+   ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
+   ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),
+   ("Coffee Caramel", "☕", "Smooth coffee ganache with rich brownie and gooey caramel", "$10", "fruit-coffee-caramel"),
+   ("Raspberry", "\U0001F353", "Raspberry ganache with a vibrant fresh raspberry purée center", "$10", "fruit-raspberry"),
+   ("Blueberry", "\U0001FAD0", "Creamy ganache with a fresh blueberry purée center", "$10", "fruit-blueberry"),
+   ("Lilikoi", "\U0001F33A", "Creamy ganache with a sweet-tart lilikoi (passion fruit) confit", "$8", "fruit-lilikoi"),
+   ("Pistachio", "\U0001F49A", "Pistachio ganache, a crunchy pistachio layer and tender pistachio sponge", "$12", "fruit-pistachio"),
+   ("Banana", "\U0001F34C", "Banana ganache with chocolate waffle crunch and a passion fruit crémeux", "$10", "fruit-banana"),
+   ("Mango", "\U0001F96D", "Mango ganache with juicy mango pieces and mango purée", "$10", "fruit-mango"),
+ ]),
+ ("Donut Cake",
+  "Bite-size chocolate-glazed cake donuts with a soft cheesecake-mousse center · 4″ $12 / 3″ $7", [
+   ("Dubai Filling", "\U0001F36B", "Chocolate sponge, vanilla mousse, crispy kataifi & pistachio filling, Belgian milk chocolate", "4″ $12 / 3″ $7", "donut-dubai"),
+   ("Coconut Chocolate", "\U0001F965", "Chocolate sponge, coconut cheesecake, white chocolate & coconut filling, Belgian milk chocolate", "4″ $12 / 3″ $7", "donut-coconut-chocolate"),
+   ("Mango Lilikoi", "\U0001F96D", "Vanilla sponge, mango cheesecake, lilikoi filling, Belgian chocolate", "4″ $12 / 3″ $7", "donut-mango-lilikoi"),
+   ("Raspberry Matcha", "\U0001F353", "Vanilla sponge, matcha cheesecake, raspberry confit, Belgian chocolate", "4″ $12 / 3″ $7", "donut-raspberry-matcha"),
+ ]),
  ("Signature Cheesecakes",
   "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
    ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 8″ $70", 3),
@@ -60,20 +81,6 @@ MENU = [
    ("Tiramisu", "☕", "", "$9 each", 10),
    ("Berry", "\U0001F353", "", "$9 each", 11),
    ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
- ]),
- ("Fruit Desserts",
-  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 10 — $100, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
-   ("Fruit Desserts Box", "\U0001F36B", "Ten desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
-   ("Chocolate Cherry", "\U0001F352", "Silky milk chocolate ganache with a juicy cherry center", "$10", "fruit-chocolate-cherry"),
-   ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
-   ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),
-   ("Coffee Caramel", "☕", "Smooth coffee ganache with rich brownie and gooey caramel", "$10", "fruit-coffee-caramel"),
-   ("Raspberry", "\U0001F353", "Raspberry ganache with a vibrant fresh raspberry purée center", "$10", "fruit-raspberry"),
-   ("Blueberry", "\U0001FAD0", "Creamy ganache with a fresh blueberry purée center", "$10", "fruit-blueberry"),
-   ("Lilikoi", "\U0001F33A", "Creamy ganache with a sweet-tart lilikoi (passion fruit) confit", "$8", "fruit-lilikoi"),
-   ("Pistachio", "\U0001F49A", "Pistachio ganache, a crunchy pistachio layer and tender pistachio sponge", "$12", "fruit-pistachio"),
-   ("Banana", "\U0001F34C", "Banana ganache with chocolate waffle crunch and a passion fruit crémeux", "$10", "fruit-banana"),
-   ("Mango", "\U0001F96D", "Mango ganache with juicy mango pieces and mango purée", "$10", "fruit-mango"),
  ]),
  ("Meringue Roll", "", [
    ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
