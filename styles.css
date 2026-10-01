@@ -430,6 +430,14 @@ ul, ol { padding: 0; list-style: none; }
   font-style: normal;
 }
 
+.hero__where {
+  margin-top: var(--space-2);
+  max-width: 40ch;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.4vw + 0.9rem, 1.2rem);
+  color: var(--ink-brown-soft);
+}
+
 .hero__ctas {
   margin-top: var(--space-4);
   display: flex;
@@ -907,6 +915,42 @@ ul, ol { padding: 0; list-style: none; }
   color: var(--ink-brown-soft);
   font-family: var(--font-ui);
 }
+.footer__copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ============================================================
+   Standalone pages (thank-you, privacy): no hero, so clear the fixed nav
+   ============================================================ */
+
+.section--thankyou,
+.legal {
+  padding-top: calc(var(--nav-h) + var(--space-5));
+}
+.legal {
+  max-width: 760px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-bottom: var(--space-5);
+  color: var(--ink-brown);
+}
+.legal h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+  line-height: 1.2;
+}
+.legal h2 {
+  margin-top: var(--space-4);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 0.8vw + 1rem, 1.5rem);
+}
+.legal p,
+.legal ul { margin-top: var(--space-2); line-height: 1.6; }
+.legal ul { list-style: disc; padding-left: 1.4em; }
+.legal a { text-decoration: underline; text-underline-offset: 2px; }
+.legal__date { color: var(--ink-brown-soft); font-style: italic; }
 
 /* ============================================================
    Reveal animations

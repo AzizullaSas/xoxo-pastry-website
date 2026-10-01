@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /thank-you
+
+Sitemap: https://xoxopastry.com/sitemap.xml

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; connect-src https://xlicuyemmiapundcqqqf.supabase.co; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com; script-src 'self' https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com; connect-src https://xlicuyemmiapundcqqqf.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com https://pagead2.googlesyndication.com; frame-src https://td.doubleclick.net https://*.googletagmanager.com; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F5E6D8">
-  <meta name="description" content="XOXO Pastry — handcrafted desserts with only natural ingredients. Signature cheesecakes, NY style cakes, tartlets, fruit desserts and more. Message us to order.">
+  <meta name="description" content="Handmade cheesecakes, fruit desserts and custom celebration cakes in Honolulu, Oahu. Only natural ingredients. Order online at least 1 day ahead, pickup in Honolulu.">
   <meta name="color-scheme" content="light">
 
-  <title>XOXO Pastry — Handcrafted Desserts with Aloha</title>
+  <title>XOXO Pastry — Handmade Cheesecakes &amp; Desserts in Honolulu, Hawaii</title>
 
   <link rel="canonical" href="https://xoxopastry.com/">
 
@@ -21,14 +21,37 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <!-- Google tag (GA4 + Google Ads). Inline snippet is split out to js/analytics.js for the CSP. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TVH94LNMW"></script>
+  <script src="js/analytics.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Bakery",
+    "name": "XOXO Pastry",
+    "url": "https://xoxopastry.com/",
+    "image": "https://xoxopastry.com/images/custom-orders.jpg",
+    "description": "Small-batch home bakery in Honolulu: handmade cheesecakes, fruit desserts and custom celebration cakes with only natural ingredients.",
+    "telephone": "+1-279-243-0095",
+    "priceRange": "$$",
+    "servesCuisine": "Desserts",
+    "hasMenu": "https://xoxopastry.com/#menu",
+    "address": { "@type": "PostalAddress", "addressLocality": "Honolulu", "addressRegion": "HI", "addressCountry": "US" },
+    "areaServed": { "@type": "City", "name": "Honolulu" },
+    "sameAs": ["https://instagram.com/xoxo.pastry"]
+  }
+  </script>
+
+
   <noscript>
     <style>
       .reveal { opacity: 1 !important; transform: none !important; }
     </style>
   </noscript>
 
-  <meta property="og:title" content="XOXO Pastry — Handcrafted Desserts">
-  <meta property="og:description" content="Handcrafted cheesecakes, tartlets, fruit desserts and custom celebration cakes. Made with love.">
+  <meta property="og:title" content="XOXO Pastry — Handmade Desserts in Honolulu">
+  <meta property="og:description" content="Handcrafted cheesecakes, fruit desserts, tartlets and custom celebration cakes in Honolulu, Oahu. Made with love.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xoxopastry.com/">
   <meta property="og:site_name" content="XOXO Pastry">
@@ -158,6 +181,7 @@
 
       <p class="hero__eyebrow reveal" style="--i:2">Only natural ingredients</p>
       <p class="hero__tagline reveal" style="--i:3">Taste the Aloha in every dessert</p>
+      <p class="hero__where reveal" style="--i:3">Handmade cheesecakes, fruit desserts &amp; custom cakes &middot; Honolulu, Oahu</p>
 
       <div class="hero__ctas reveal" style="--i:4">
         <a class="btn btn--primary" href="#menu">View the menu</a>
@@ -176,7 +200,7 @@
         <span class="divider__line"></span>
       </div>
       <p class="about__eyebrow">Aloha friends</p>
-      <p>Small-batch desserts handcrafted with only natural, high-quality ingredients. No shortcuts. No additives. Just real taste, real memories, and a little extra joy in every bite.</p>
+      <p>Small-batch desserts handcrafted in Honolulu with only natural, high-quality ingredients. No shortcuts. No additives. Just real taste, real memories, and a little extra joy in every bite.</p>
       <p class="about__sign">Welcome to our sweet world.</p>
     </section>
 
@@ -775,7 +799,7 @@
             </div>
 
             <p class="oform__notice">
-              All orders are <strong>pickup</strong>. Need delivery?
+              All orders are <strong>pickup in Honolulu</strong>. Need delivery?
               <a href="https://wa.me/19167799058" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a>
               and we&rsquo;ll arrange the details and any fee together.
             </p>
@@ -899,7 +923,7 @@
         <span aria-hidden="true">·</span>
         <a href="https://instagram.com/xoxo.pastry" target="_blank" rel="noopener noreferrer">@xoxo.pastry</a>
       </p>
-      <p class="footer__copy">© 2026 XOXO Pastry. Only natural, only with Aloha.</p>
+      <p class="footer__copy">© 2026 XOXO Pastry · Honolulu, Hawaii. Only natural, only with Aloha. · <a href="privacy">Privacy</a></p>
     </div>
   </footer>
 

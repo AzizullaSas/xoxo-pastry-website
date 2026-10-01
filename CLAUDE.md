@@ -35,6 +35,14 @@ admin.html ──UPDATE orders(status, deposit_paid)──► status changes    
 - **The public order form is pickup-only.** It always submits `fulfillment: 'pickup'` (the pickup/delivery toggle and address field were removed; a notice tells customers to message on WhatsApp to arrange delivery). The DB enum + RPC still support `delivery`/`delivery_address` (for manual/admin or future use), so the schema is unchanged — don't "fix" the unused delivery code paths.
 - The form is built to accept future channels (WhatsApp/Instagram/etc.) hitting the same RPC with `channel`/`external_ref`/`meta` — schema already supports it.
 
+## Google Ads / analytics & the /thank-you page
+
+- The Google tag `G-3TVH94LNMW` (GA4 + Google Ads) is on `index.html`, `thank-you.html` and `privacy.html` (never `admin.html`): gtag.js loads async from googletagmanager.com, and the usual inline snippet lives in [js/analytics.js](js/analytics.js) because the CSP forbids inline scripts. It only reports on the live hostname, and sends a GA4 `contact` event on WhatsApp/SMS/Instagram clicks.
+- **The CSP on those three pages whitelists the Google tag/Ads/Analytics hosts** (script/img/connect/frame-src). If you add a page with the tag, copy that CSP; if you tighten it, the tag silently breaks.
+- **A real order redirects to `/thank-you`** (`goToThankYou()` in `order-form.js`, data handed over via `sessionStorage['xoxo_last_order']`, rendered by [js/thank-you.js](js/thank-you.js)). That page load is the **Google Ads purchase conversion (URL rule on `https://xoxopastry.com/thank-you`)** — don't rename the page or turn it back into an in-page panel. GitHub Pages serves `thank-you.html` at the extensionless URL; plain `py -m http.server` doesn't, so the redirect 404s in that local preview.
+- The old in-page success panel in `index.html` is now only shown for the honeypot (so bots never count as conversions). **The Zelle/Venmo payment block is duplicated** in `index.html` and `thank-you.html` — change payment details in both.
+- [privacy.html](privacy.html) (required once ads/analytics collect data), [robots.txt](robots.txt), [sitemap.xml](sitemap.xml) and a schema.org `Bakery` JSON-LD block in `index.html` support SEO. The business is pickup in **Honolulu, Oahu** — copy, meta and JSON-LD say so.
+
 ## Admin dashboard
 
 Supabase email+password auth. Access is gated by the `is_admin()` SQL function checking the signed-in email against the `admin_users` allow-list (RLS). To add an admin: insert the email into `admin_users`, then that person signs up on `admin.html` with the same email. Admins are granted `UPDATE` only on `orders(status, deposit_paid)` — nothing else.
@@ -69,7 +77,7 @@ When you edit menu items in `index.html`, prefer editing `scripts/build-menu.py`
 
 ## Security model (don't weaken these)
 
-- Strict CSP in [index.html](index.html): `default-src 'none'`, `script-src 'self'`, `connect-src` limited to the Supabase project origin. No inline scripts, no third-party script hosts.
+- Strict CSP in [index.html](index.html): `default-src 'none'`, `script-src 'self'` plus the Google tag hosts only, `connect-src` limited to the Supabase project origin plus Google Analytics/Ads endpoints. No inline scripts; no other third-party script hosts.
 - All untrusted text (customer names, notes, addresses) is rendered with `textContent` / DOM APIs in [js/admin.js](js/admin.js) — never `innerHTML`. Keep it that way.
 - RLS is the security boundary, not the front end. `orders`/`order_items` are unreadable by `anon`; `admin_users` and `app_config` are unreachable through the API entirely.
 

@@ -146,6 +146,20 @@
     els.successTitle.focus();
   }
 
+  // Real orders land on /thank-you: that page load is the Google Ads purchase
+  // conversion (URL rule). The in-page panel above is kept only for the honeypot,
+  // so bots never trigger a conversion. If the redirect can't carry the order
+  // (storage blocked), thank-you.js falls back to generic copy.
+  function goToThankYou(result) {
+    try {
+      sessionStorage.setItem('xoxo_last_order', JSON.stringify({
+        order_number: result.order_number,
+        deposit_due: Number(result.deposit_due) || 0
+      }));
+    } catch (e) { /* storage unavailable — page still works */ }
+    location.assign('thank-you');
+  }
+
   /* ---------- item rows ---------- */
 
   function rowList() {
@@ -530,7 +544,7 @@
       .then((res) => res.json().then((body) => ({ ok: res.ok, body })))
       .then((result) => {
         if (result.ok && result.body && result.body.ok) {
-          showSuccess(result.body);
+          goToThankYou(result.body);
         } else {
           handleRpcError(result.body || {});
         }
