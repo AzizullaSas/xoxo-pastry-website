@@ -16,6 +16,7 @@
 
   const els = {};
   let products = [];
+  let closures = []; // [{ starts_on, ends_on }] — today and later, from store_closures
   let rowSeq = 0;
   let sending = false;
 
@@ -33,6 +34,8 @@
 
     els.loading = document.getElementById('oform-loading');
     els.fallback = document.getElementById('oform-fallback');
+    els.closed = document.getElementById('oform-closed');
+    els.closedText = document.getElementById('oform-closed-text');
     els.success = document.getElementById('oform-success');
     els.successTitle = document.getElementById('oform-success-title');
     els.successText = document.getElementById('oform-success-text');
@@ -71,24 +74,37 @@
   }
 
   function loadCatalog(cfg) {
+    const headers = {
+      apikey: cfg.SUPABASE_ANON_KEY,
+      Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY
+    };
     const url = cfg.SUPABASE_URL +
       '/rest/v1/products?select=id,name,unit,base_price,min_qty,note,sort,' +
       'product_flavors(name,price_override,sort),product_addons(name,price,sort,flavor)' +
       '&active=is.true&order=sort';
-    fetch(url, {
-      headers: {
-        apikey: cfg.SUPABASE_ANON_KEY,
-        Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY
-      }
-    })
-      .then((res) => {
+    const closuresUrl = cfg.SUPABASE_URL +
+      '/rest/v1/store_closures?select=starts_on,ends_on&ends_on=gte.' + hawaiiToday() +
+      '&order=starts_on';
+    // Closures are a nicety (place_order enforces them anyway), so a failed fetch
+    // just means no closures rather than the fallback panel.
+    const closuresReq = fetch(closuresUrl, { headers })
+      .then((res) => (res.ok ? res.json() : []))
+      .catch(() => []);
+    Promise.all([fetch(url, { headers }), closuresReq])
+      .then(([res, closureData]) => {
         if (!res.ok) throw new Error('HTTP ' + res.status);
+        closures = Array.isArray(closureData) ? closureData : [];
         return res.json();
       })
       .then((data) => {
         if (!Array.isArray(data) || data.length === 0) throw new Error('empty catalog');
         products = data.map(normalizeProduct);
-        showForm();
+        const current = closureOn(hawaiiToday());
+        if (current) {
+          showClosed(current);
+        } else {
+          showForm();
+        }
       })
       .catch(showFallback);
   }
@@ -122,6 +138,19 @@
     els.loading.hidden = true;
     els.form.hidden = true;
     els.fallback.hidden = false;
+  }
+
+  function showClosed(closure) {
+    els.loading.hidden = true;
+    els.form.hidden = true;
+    els.success.hidden = true;
+    if (closure) {
+      els.closedText.textContent = 'Our team is away until ' + prettyDate(closure.ends_on) +
+        ', so online ordering is paused. We take orders again from ' +
+        prettyDate(addDays(closure.ends_on, 1)) +
+        ' — message us on WhatsApp and we will get back to you.';
+    }
+    els.closed.hidden = false;
   }
 
   function showForm() {
@@ -377,12 +406,36 @@
 
   /* ---------- helpers ---------- */
 
-  function hawaiiTomorrow() {
-    const todayHawaii = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Honolulu' })
+  function hawaiiToday() {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Honolulu' })
       .format(new Date()); // "YYYY-MM-DD"
-    const d = new Date(todayHawaii + 'T00:00:00Z');
-    d.setUTCDate(d.getUTCDate() + 1);
+  }
+
+  function hawaiiTomorrow() {
+    return addDays(hawaiiToday(), 1);
+  }
+
+  function addDays(iso, n) {
+    const d = new Date(iso + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + n);
     return d.toISOString().slice(0, 10);
+  }
+
+  // "Sunday, October 18" for a YYYY-MM-DD string.
+  function prettyDate(iso) {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric'
+    }).format(new Date(iso + 'T00:00:00Z'));
+  }
+
+  // The closure covering a YYYY-MM-DD date (bounds inclusive), or null.
+  function closureOn(iso) {
+    return closures.find((c) => iso >= c.starts_on && iso <= c.ends_on) || null;
+  }
+
+  function closedDateMessage(c) {
+    return 'We are away ' + prettyDate(c.starts_on) + ' – ' + prettyDate(c.ends_on) +
+      '. Please pick another date.';
   }
 
   function money(n) {
@@ -512,6 +565,9 @@
     } else if (payload.needed_date < els.date.min) {
       mark(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
         'We need at least 1 day notice (Hawaii time).'));
+    } else if (closureOn(payload.needed_date)) {
+      mark(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
+        closedDateMessage(closureOn(payload.needed_date))));
     }
 
     if (!payload.customer_name) {
@@ -575,6 +631,15 @@
       case 'DATE_TOO_SOON':
         focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
           'We need at least 1 day notice (Hawaii time).'));
+        break;
+      case 'DATE_CLOSED': {
+        const c = closureOn(els.date.value);
+        focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
+          c ? closedDateMessage(c) : 'We are closed that day. Please pick another date.'));
+        break;
+      }
+      case 'STORE_CLOSED':
+        showClosed(closureOn(hawaiiToday()));
         break;
       case 'DATE_TOO_FAR':
         focusError(fieldError(els.dateBtn, document.getElementById('oform-date-error'),
