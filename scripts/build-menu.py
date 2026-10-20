@@ -76,12 +76,6 @@ MENU = [
    ("Red Velvet", "❤️", "", "$8", 30),
    ("Lotus Biscoff", "\U0001F49B", "", "$8", 7),
  ]),
- ("Tartlets",
-  "Crispy shell, creamy filling and that perfect not-too-sweet balance · $27 · box of 3", [
-   ("Tiramisu", "☕", "", "$9 each", 10),
-   ("Berry", "\U0001F353", "", "$9 each", 11),
-   ("Pistachio Raspberry", "\U0001F49A", "", "$9 each", 1),
- ]),
  ("Meringue Roll", "", [
    ("Meringue Roll", "\U0001F353", "Light, airy meringue filled with cream cheese, pistachios and fresh raspberries", "$60", 16),
  ]),

@@ -99,7 +99,7 @@ def process(src, dst):
 
 MAP = {
     19: "menu-signature", 27: "menu-basque", 26: "menu-baby-basque",
-    6: "menu-ny-cookies", 11: "menu-tartlets", 16: "menu-meringue-roll",
+    6: "menu-ny-cookies", 16: "menu-meringue-roll",
     28: "menu-tiramisu", 18: "menu-hawaiian-honey",
 }
 
