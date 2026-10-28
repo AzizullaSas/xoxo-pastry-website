@@ -39,6 +39,7 @@ admin.html ──UPDATE orders(status, deposit_paid)──► status changes    
 ## Google Ads / analytics & the /thank-you page
 
 - The Google tag `G-3TVH94LNMW` (GA4 + Google Ads) is on `index.html`, `thank-you.html` and `privacy.html` (never `admin.html`): gtag.js loads async from googletagmanager.com, and the usual inline snippet lives in [js/analytics.js](js/analytics.js) because the CSP forbids inline scripts. It only reports on the live hostname, and sends a GA4 `contact` event on WhatsApp/SMS/Instagram clicks.
+- The **Meta Pixel `1485503546755774`** is on the same three pages: Meta's base code lives in [js/meta-pixel.js](js/meta-pixel.js) (same live-hostname gate, sends `PageView`), plus a `<noscript>` image right after `<body>`. The CSP allows `connect.facebook.net` (script/connect-src) and `www.facebook.com` (img/connect-src); [privacy.html](privacy.html) discloses it.
 - **The CSP on those three pages whitelists the Google tag/Ads/Analytics hosts** (script/img/connect/frame-src). If you add a page with the tag, copy that CSP; if you tighten it, the tag silently breaks.
 - **A real order redirects to `/thank-you`** (`goToThankYou()` in `order-form.js`, data handed over via `sessionStorage['xoxo_last_order']`, rendered by [js/thank-you.js](js/thank-you.js)). That page load is the **Google Ads purchase conversion (URL rule on `https://xoxopastry.com/thank-you`)** — don't rename the page or turn it back into an in-page panel. GitHub Pages serves `thank-you.html` at the extensionless URL; plain `py -m http.server` doesn't, so the redirect 404s in that local preview.
 - The old in-page success panel in `index.html` is now only shown for the honeypot (so bots never count as conversions). **The Zelle/Venmo payment block is duplicated** in `index.html` and `thank-you.html` — change payment details in both.
@@ -78,7 +79,7 @@ When you edit menu items in `index.html`, prefer editing `scripts/build-menu.py`
 
 ## Security model (don't weaken these)
 
-- Strict CSP in [index.html](index.html): `default-src 'none'`, `script-src 'self'` plus the Google tag hosts only, `connect-src` limited to the Supabase project origin plus Google Analytics/Ads endpoints. No inline scripts; no other third-party script hosts.
+- Strict CSP in [index.html](index.html): `default-src 'none'`, `script-src 'self'` plus the Google tag and Meta Pixel hosts only, `connect-src` limited to the Supabase project origin plus Google Analytics/Ads and Meta Pixel endpoints. No inline scripts; no other third-party script hosts.
 - All untrusted text (customer names, notes, addresses) is rendered with `textContent` / DOM APIs in [js/admin.js](js/admin.js) — never `innerHTML`. Keep it that way.
 - RLS is the security boundary, not the front end. `orders`/`order_items` are unreadable by `anon`; `admin_users` and `app_config` are unreachable through the API entirely.
 

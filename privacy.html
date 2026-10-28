@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com; script-src 'self' https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com; connect-src https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com https://pagead2.googlesyndication.com; frame-src https://td.doubleclick.net https://*.googletagmanager.com; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com https://www.facebook.com; script-src 'self' https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://connect.facebook.net; connect-src https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com https://www.googleadservices.com https://pagead2.googlesyndication.com https://www.facebook.com https://connect.facebook.net; frame-src https://td.doubleclick.net https://*.googletagmanager.com; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F5E6D8">
@@ -22,8 +22,11 @@
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TVH94LNMW"></script>
   <script src="js/analytics.js"></script>
+  <!-- Meta Pixel. Inline base code is split out to js/meta-pixel.js for the CSP. -->
+  <script src="js/meta-pixel.js"></script>
 </head>
 <body>
+  <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1485503546755774&ev=PageView&noscript=1"></noscript>
 
   <svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -49,7 +52,7 @@
 
   <main class="legal">
     <h1>Privacy Policy</h1>
-    <p class="legal__date">Last updated: October 1, 2026</p>
+    <p class="legal__date">Last updated: October 28, 2026</p>
 
     <p>XOXO Pastry is a small home bakery in Honolulu, Hawaii. This page explains what information we collect on xoxopastry.com and what we do with it.</p>
 
@@ -63,6 +66,7 @@
     <h2>Analytics and advertising</h2>
     <p>We use Google Analytics and Google Ads to understand how visitors find us and whether our ads work (for example, counting that an order was placed after someone clicked an ad). These Google services may set cookies or use similar technologies and collect information such as pages visited, device type and approximate location. Google's use of this data is described in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites that use its services</a>.</p>
     <p>You can opt out of personalized ads at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ad Settings</a> and out of Google Analytics with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics opt-out browser add-on</a>.</p>
+    <p>We also use the Meta Pixel, a tool from Meta Platforms (Facebook and Instagram), to measure and improve our ads on those apps. It may set cookies or use similar technologies and collect information such as pages visited, device and browser details and your IP address, which Meta may link to your Facebook or Instagram account. Meta's use of this data is described in the <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">Meta Privacy Policy</a>; you can control ads based on your activity in Meta's <a href="https://accountscenter.facebook.com/ad_preferences" target="_blank" rel="noopener noreferrer">ad preferences</a>.</p>
 
     <h2>Contacting us through other apps</h2>
     <p>If you message us on WhatsApp, SMS or Instagram, those conversations are handled by those apps under their own privacy policies. We use them only to talk with you about your order.</p>
