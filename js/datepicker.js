@@ -1,8 +1,8 @@
 /* XOXO Pastry — custom, brand-styled date picker.
    Replaces the native date popup with a cream/rose calendar. It writes the
    chosen day (YYYY-MM-DD) into the hidden #oform-date that order-form.js reads,
-   so the existing validation/submit path is untouched. No dependencies; works
-   under the page CSP (script-src 'self'). Bounds match the server: earliest is
+   so the existing validation/submit path is untouched. No dependencies.
+   Bounds match the server: earliest is
    tomorrow in Hawaii, latest is one year out. */
 (function () {
   'use strict';

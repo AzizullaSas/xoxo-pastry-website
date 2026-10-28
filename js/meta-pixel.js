@@ -1,6 +1,6 @@
 /* XOXO Pastry — Meta (Facebook/Instagram) Pixel.
-   Meta's standard base code, moved out of an inline <script> because the CSP
-   forbids inline scripts. It loads fbevents.js async from connect.facebook.net,
+   Meta's standard base code, kept in its own file like js/analytics.js.
+   It loads fbevents.js async from connect.facebook.net,
    reports a PageView on every page that includes this file and a Contact on
    WhatsApp / SMS / Instagram clicks. Purchase is sent by js/thank-you.js. */
 (function () {

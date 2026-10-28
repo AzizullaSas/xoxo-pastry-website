@@ -1,6 +1,6 @@
 /* XOXO Pastry — Google tag (GA4 + Google Ads).
-   Lives in its own file because the CSP forbids inline scripts; gtag.js itself
-   is loaded async from googletagmanager.com right before this file.
+   The usual inline snippet, kept in its own file; gtag.js itself is loaded
+   async from googletagmanager.com right before this file.
    The Google Ads purchase conversion is a URL rule on /thank-you (page load),
    so nothing here has to fire it — this only configures the tag and reports
    contact clicks (WhatsApp / SMS / Instagram) as GA4 events. */
