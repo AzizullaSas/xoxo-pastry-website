@@ -30,13 +30,20 @@
     ' deposit now. Here is my payment screenshot:';
   document.getElementById('ty-wa').href = WHATSAPP_URL + '?text=' + encodeURIComponent(msg);
 
-  // GA4 purchase, once per order (a reload of this page must not count twice).
-  if (typeof gtag === 'function' && !order.reported) {
-    gtag('event', 'purchase', {
-      transaction_id: 'xoxo-' + num,
-      value: Math.round(deposit / 0.2 * 100) / 100,
-      currency: 'USD'
-    });
+  // GA4 + Meta purchase, once per order (a reload of this page must not count twice).
+  // fbq only exists on the live site (js/meta-pixel.js skips local previews).
+  if (!order.reported) {
+    var value = Math.round(deposit / 0.2 * 100) / 100;
+    if (typeof gtag === 'function') {
+      gtag('event', 'purchase', {
+        transaction_id: 'xoxo-' + num,
+        value: value,
+        currency: 'USD'
+      });
+    }
+    if (typeof fbq === 'function') {
+      fbq('track', 'Purchase', { value: value, currency: 'USD' }, { eventID: 'xoxo-' + num });
+    }
     order.reported = true;
     try { sessionStorage.setItem('xoxo_last_order', JSON.stringify(order)); } catch (e) { /* ignore */ }
   }

@@ -1,7 +1,8 @@
 /* XOXO Pastry — Meta (Facebook/Instagram) Pixel.
    Meta's standard base code, moved out of an inline <script> because the CSP
-   forbids inline scripts. It loads fbevents.js async from connect.facebook.net
-   and reports a PageView on every page that includes this file. */
+   forbids inline scripts. It loads fbevents.js async from connect.facebook.net,
+   reports a PageView on every page that includes this file and a Contact on
+   WhatsApp / SMS / Instagram clicks. Purchase is sent by js/thank-you.js. */
 (function () {
   'use strict';
 
@@ -22,4 +23,18 @@
 
   fbq('init', PIXEL_ID);
   fbq('track', 'PageView');
+
+  function contactMethod(href) {
+    if (href.indexOf('https://wa.me/') === 0) return 'whatsapp';
+    if (href.indexOf('sms:') === 0 || href.indexOf('tel:') === 0) return 'sms';
+    if (href.indexOf('instagram.com') !== -1) return 'instagram';
+    return null;
+  }
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[href]');
+    if (!link) return;
+    var method = contactMethod(link.getAttribute('href'));
+    if (method) fbq('track', 'Contact', { method: method });
+  });
 })();
