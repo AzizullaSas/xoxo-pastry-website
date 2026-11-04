@@ -22,6 +22,18 @@
   }
 
   /* ----------------------------------------------------------
+     Floating "Order now": hide it while the order form is on
+     screen. Without IntersectionObserver it just stays visible.
+     ---------------------------------------------------------- */
+  const orderFab = document.getElementById('order-fab');
+  const orderSection = document.getElementById('order');
+  if (orderFab && orderSection && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      orderFab.classList.toggle('is-hidden', entries[entries.length - 1].isIntersecting);
+    }).observe(orderSection);
+  }
+
+  /* ----------------------------------------------------------
      Reveal-on-scroll. One observer, one-shot per element.
      Honours prefers-reduced-motion (no observer at all).
      ---------------------------------------------------------- */

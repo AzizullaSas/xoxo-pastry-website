@@ -23,7 +23,6 @@ MENU = [
  ("Fruit Desserts",
   "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 10 — $100, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
    ("Fruit Desserts Box", "\U0001F36B", "Ten desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
-   ("Chocolate Cherry", "\U0001F352", "Silky milk chocolate ganache with a juicy cherry center", "$10", "fruit-chocolate-cherry"),
    ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
    ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),
    ("Coffee Caramel", "☕", "Smooth coffee ganache with rich brownie and gooey caramel", "$10", "fruit-coffee-caramel"),
@@ -34,21 +33,10 @@ MENU = [
    ("Banana", "\U0001F34C", "Banana ganache with chocolate waffle crunch and a passion fruit crémeux", "$10", "fruit-banana"),
    ("Mango", "\U0001F96D", "Mango ganache with juicy mango pieces and mango purée", "$10", "fruit-mango"),
  ]),
- ("Donut Cake",
-  "Bite-size chocolate-glazed cake donuts with a soft cheesecake-mousse center · 4″ $12 / 3″ $7", [
-   ("Dubai Filling", "\U0001F36B", "Chocolate sponge, vanilla mousse, crispy kataifi & pistachio filling, Belgian milk chocolate", "4″ $12 / 3″ $7", "donut-dubai"),
-   ("Coconut Chocolate", "\U0001F965", "Chocolate sponge, coconut cheesecake, white chocolate & coconut filling, Belgian milk chocolate", "4″ $12 / 3″ $7", "donut-coconut-chocolate"),
-   ("Mango Lilikoi", "\U0001F96D", "Vanilla sponge, mango cheesecake, lilikoi filling, Belgian chocolate", "4″ $12 / 3″ $7", "donut-mango-lilikoi"),
-   ("Raspberry Matcha", "\U0001F353", "Vanilla sponge, matcha cheesecake, raspberry confit, Belgian chocolate", "4″ $12 / 3″ $7", "donut-raspberry-matcha"),
- ]),
  ("Signature Cheesecakes",
   "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
-   ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 8″ $70", 3),
    ("Pistachio Raspberry", "\U0001F49A", "Buttery sablé crust with pistachio flour, creamy pistachio cheesecake, rich raspberry confit and silky white chocolate pistachio ganache", "6″ $50 · 8″ $85", 19),
    ("Honey", "\U0001F36F", "Crispy sablé crust, honey cheesecake layered with delicate honey sponge and honey crumble", "6″ $45 · 8″ $75", 12),
-   ("Cherry Chocolate", "\U0001F352", "Black Forest — crispy sablé crust, rich chocolate cheesecake layered with vibrant cherry confit and finished with silky white chocolate ganache", "6″ $45 · 8″ $75", 2),
-   ("Raspberry Mousse", "\U0001FAD0", "Crispy sablé crust, creamy raspberry cheesecake topped with delicate white chocolate mousse and pieces of fresh raspberry", "6″ $45 · 8″ $75", 4),
-   ("Mint Blueberry", "\U0001FAD0", "Crispy sablé crust, a two-layer cheesecake infused with refreshing mint and juicy blueberries, crowned with smooth blueberry ganache", "6″ $45 · 8″ $70", 5),
    ("Baklava", "\U0001F36F", "Creamy honey cheesecake on a crisp base, layered with homemade honey syrup-soaked baklava and crushed pistachios", "8″ only $80", 17),
  ]),
  ("Basque Cheesecake",
@@ -82,8 +70,6 @@ MENU = [
  ("Tiramisu", "Classic Italian — layers of mascarpone cream and coffee-soaked savoiardi", [
    ("Whole Cake", "\U0001F370", "Serves 8–10", "$75", 36),
    ("Classic Cup", "☕", "", "$8", None),
-   ("Strawberry Cup", "\U0001F353", "", "$9", 37),
-   ("Limoncello Cup", "\U0001F34B", "", "$9", 38),
  ]),
  ("Hawaiian Honey Cake", "", [
    ("Hawaiian Honey Cake", "\U0001F36F", "Delicate honey cake layers soaked in cream cheese frosting with rich house-made salted caramel", "$80", 18),

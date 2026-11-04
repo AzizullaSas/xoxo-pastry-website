@@ -354,6 +354,53 @@ ul, ol { padding: 0; list-style: none; }
   font-size: 1.1rem;
 }
 
+/* Floating "Order now" — fixed bottom-right, hidden (.is-hidden) while the
+   order form is on screen so it never covers the form or its submit button. */
+.order-fab {
+  position: fixed;
+  right: calc(1rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0.8rem 1.4rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--accent-rose-deep);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  box-shadow: 0 14px 30px -12px rgba(74, 46, 31, 0.55);
+  white-space: nowrap;
+  transition: opacity 260ms ease, transform 260ms ease, visibility 0s linear 0s, background-color 220ms ease, box-shadow 220ms ease;
+}
+.order-fab svg { width: 18px; height: 18px; flex-shrink: 0; }
+.order-fab:hover,
+.order-fab:focus-visible {
+  background: var(--accent-rose-ink);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px -12px rgba(74, 46, 31, 0.6);
+}
+.order-fab:focus-visible { outline: 2px solid var(--ink-brown); outline-offset: 3px; }
+.order-fab.is-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 260ms ease, transform 260ms ease, visibility 0s linear 260ms;
+}
+@media (min-width: 720px) {
+  .order-fab {
+    right: calc(1.75rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ============================================================
    Hero
    ============================================================ */
@@ -1498,5 +1545,6 @@ ul, ol { padding: 0; list-style: none; }
 
 @media print {
   .nav, .hero__bow, .orn-floral, .reveal { all: revert; opacity: 1; }
+  .order-fab { display: none; }
   body { background: white; color: black; }
 }
