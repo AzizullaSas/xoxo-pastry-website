@@ -21,8 +21,8 @@ os.makedirs(OUTIMG, exist_ok=True)
 # item: (name, emoji, desc, price, photo_number_or_name_or_None[, note])
 MENU = [
  ("Fruit Desserts",
-  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 10 — $100, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
-   ("Fruit Desserts Box", "\U0001F36B", "Ten desserts in one box — one flavor for the whole box, or let us make it assorted", "$100", 35),
+  "Crispy chocolate shell, silky ganache and a flavor-packed center · box of 9 — $90, or single pieces — $8–$12 each (you can choose individually and build your own box with as many flavors as you like)", [
+   ("Fruit Desserts Box", "\U0001F36B", "Nine desserts in one box — one flavor for the whole box, or let us make it assorted", "$90", 35),
    ("Lemon Cake", "\U0001F34B", "Lemon-vanilla ganache layered with bright lemon curd and soft vanilla sponge", "$10", "fruit-lemon-cake"),
    ("Coconut Crunch", "\U0001F965", "Creamy coconut ganache with coconut flakes and a crispy waffle crunch", "$10", "fruit-coconut-crunch"),
    ("Coffee Caramel", "☕", "Smooth coffee ganache with rich brownie and gooey caramel", "$10", "fruit-coffee-caramel"),
