@@ -35,6 +35,7 @@ MENU = [
  ]),
  ("Signature Cheesecakes",
   "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
+   ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 8″ $70", 3),
    ("Pistachio Raspberry", "\U0001F49A", "Buttery sablé crust with pistachio flour, creamy pistachio cheesecake, rich raspberry confit and silky white chocolate pistachio ganache", "6″ $50 · 8″ $85", 19),
    ("Honey", "\U0001F36F", "Crispy sablé crust, honey cheesecake layered with delicate honey sponge and honey crumble", "6″ $45 · 8″ $75", 12),
    ("Baklava", "\U0001F36F", "Creamy honey cheesecake on a crisp base, layered with homemade honey syrup-soaked baklava and crushed pistachios", "8″ only $80", 17),
