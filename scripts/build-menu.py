@@ -34,14 +34,14 @@ MENU = [
    ("Mango", "\U0001F96D", "Mango ganache with juicy mango pieces and mango purée", "$10", "fruit-mango"),
  ]),
  ("Signature Cheesecakes",
-  "Standard 8″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 8″", [
-   ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 8″ $70", 3),
-   ("Pistachio Raspberry", "\U0001F49A", "Buttery sablé crust with pistachio flour, creamy pistachio cheesecake, rich raspberry confit and silky white chocolate pistachio ganache", "6″ $50 · 8″ $85", 19),
-   ("Honey", "\U0001F36F", "Crispy sablé crust, honey cheesecake layered with delicate honey sponge and honey crumble", "6″ $45 · 8″ $75", 12),
-   ("Baklava", "\U0001F36F", "Creamy honey cheesecake on a crisp base, layered with homemade honey syrup-soaked baklava and crushed pistachios", "8″ only $80", 17),
+  "Standard 7″ (serves 8–10) · Baby 6″ (serves 2–4) · prices 6″ / 7″", [
+   ("Coconut Strawberry", "\U0001F353", "Crispy sablé crust, layered coconut and strawberry cheesecake with whipped coconut cream made from coconut milk and white chocolate", "6″ $45 · 7″ $70", 3),
+   ("Pistachio Raspberry", "\U0001F49A", "Buttery sablé crust with pistachio flour, creamy pistachio cheesecake, rich raspberry confit and silky white chocolate pistachio ganache", "6″ $50 · 7″ $85", 19),
+   ("Honey", "\U0001F36F", "Crispy sablé crust, honey cheesecake layered with delicate honey sponge and honey crumble", "6″ $45 · 7″ $75", 12),
+   ("Baklava", "\U0001F36F", "Creamy honey cheesecake on a crisp base, layered with homemade honey syrup-soaked baklava and crushed pistachios", "7″ only $80", 17),
  ]),
  ("Basque Cheesecake",
-  "Gluten-free · Spanish-style, caramelized crust and soft, melt-in-your-mouth center · 8″ · serves 8–10", [
+  "Gluten-free · Spanish-style, caramelized crust and soft, melt-in-your-mouth center · 7″ · serves 8–10", [
    ("Classic Vanilla", "", "Served with milk chocolate and a brownie base. If you’d prefer it without, just let us know!", "$65", 32),
    ("Matcha", "\U0001F375", "", "$65", 40),
    ("Chocolate Ice Cream", "\U0001F368", "", "$65", 31),
