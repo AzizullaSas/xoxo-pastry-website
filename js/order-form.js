@@ -657,6 +657,9 @@
       case 'TOO_MANY_ITEMS':
         formError('That is quite a celebration! For large orders, please', true);
         break;
+      case 'SOLD_OUT':
+        handleSoldOut(body.hint);
+        break;
       case 'UNKNOWN_PRODUCT':
       case 'FLAVOR_REQUIRED':
       case 'BAD_FLAVOR':
@@ -682,6 +685,20 @@
       focusError(rowError(row, message(p)));
     } else {
       formError('Please check the quantities and try again.', false);
+    }
+  }
+
+  // A flavor/product was marked sold out (admin.html → Menu) after this page loaded;
+  // the trigger on order_items names the product in `hint`.
+  function handleSoldOut(productId) {
+    const row = rowList().find((r) => rowProduct(r).value === productId);
+    const p = productById(productId);
+    const msg = 'Sorry — ' + (p ? p.name : 'one of these desserts') +
+      ' just sold out. Please reload the page to see what is available today.';
+    if (row) {
+      focusError(rowError(row, msg));
+    } else {
+      formError(msg, false);
     }
   }
 

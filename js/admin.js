@@ -301,6 +301,7 @@
   function signOut() {
     state.orders = [];
     state.accessChecked = false;
+    document.dispatchEvent(new Event('xoxo:signout'));
     if (!sb) { showView('login'); return; }
     sb.auth.signOut().then(function () {
       showView('login');
@@ -632,6 +633,8 @@
     }
 
     sb = lib.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    /* shared with js/admin-menu.js (the Menu tab) */
+    window.XOXOAdmin = { sb: sb, toast: toast };
 
     sb.auth.onAuthStateChange(function (event, session) {
       /* defer: never call other supabase methods inside the callback */

@@ -669,6 +669,25 @@ ul, ol { padding: 0; list-style: none; }
   font-size: 0.92rem;
   line-height: 1.35;
 }
+/* Sold out (set from admin.html → Menu; drawn by js/menu.js) */
+.fcard--soldout .fcard__media img { filter: grayscale(0.85); opacity: 0.55; }
+.fcard--soldout .fcard__name,
+.fcard--soldout .fcard__desc { opacity: 0.6; }
+.fcard__soldout-tag {
+  display: inline-block;
+  margin-left: 0.55rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ink-brown);
+  color: var(--bg-cream-soft);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 0.15em;
+}
+.fcard--soldout .fcard__price { color: var(--ink-brown-soft); }
 .fcard__note--warn {
   display: inline-block;
   padding: 0.12rem 0.5rem;

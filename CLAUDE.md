@@ -11,8 +11,8 @@ Deploy = `git push origin main`. There is nothing to build; GitHub Pages serves 
 ## Stack & layout
 
 - **Front end:** plain HTML/CSS + vanilla JS (ES5-ish IIFEs, no bundler, no npm). Two pages:
-  - [index.html](index.html) — marketing site + public order form. Loads [script.js](script.js) (sticky nav, floating "Order now" button that hides while `#order` is on screen, reveal-on-scroll), [js/config.js](js/config.js), [js/order-form.js](js/order-form.js).
-  - [admin.html](admin.html) — owner-only order dashboard. Loads [vendor/supabase.js](vendor/supabase.js) (the supabase-js lib, only used here), `js/config.js`, [js/admin.js](js/admin.js).
+  - [index.html](index.html) — marketing site + public order form. Loads [script.js](script.js) (sticky nav, floating "Order now" button that hides while `#order` is on screen, reveal-on-scroll), [js/config.js](js/config.js), [js/menu.js](js/menu.js) (draws `#menu` from the database), [js/order-form.js](js/order-form.js).
+  - [admin.html](admin.html) — owner-only dashboard with two tabs: **Orders** ([js/admin.js](js/admin.js)) and **Menu** ([js/admin-menu.js](js/admin-menu.js)). Loads [vendor/supabase.js](vendor/supabase.js) (the supabase-js lib, only used here) and `js/config.js`. `admin.js` shares its client as `window.XOXOAdmin = { sb, toast }`.
 - **Styles:** [styles.css](styles.css) (site), [admin.css](admin.css) (dashboard).
 - **Backend:** Supabase project ref `xlicuyemmiapundcqqqf`. SQL lives in [db/migrations/](db/migrations/).
 - **Config:** [js/config.js](js/config.js) ships the Supabase URL + **anon/publishable key**. This is intentionally public — **RLS is the only gate**. Never put the `service_role` key, access tokens, or the Telegram bot token in this repo.
@@ -47,7 +47,7 @@ admin.html ──UPDATE orders(status, deposit_paid)──► status changes    
 
 ## Admin dashboard
 
-Supabase email+password auth. Access is gated by the `is_admin()` SQL function checking the signed-in email against the `admin_users` allow-list (RLS). To add an admin: insert the email into `admin_users`, then that person signs up on `admin.html` with the same email. Admins are granted `UPDATE` only on `orders(status, deposit_paid)` — nothing else.
+Supabase email+password auth. Access is gated by the `is_admin()` SQL function checking the signed-in email against the `admin_users` allow-list (RLS). To add an admin: insert the email into `admin_users`, then that person signs up on `admin.html` with the same email. On orders, admins are granted `UPDATE` only on `orders(status, deposit_paid)`; the menu/catalog rights from 0027 are listed in "Menu in the database" below.
 
 ## Telegram notifications
 
@@ -66,13 +66,23 @@ Supabase email+password auth. Access is gated by the `is_admin()` SQL function c
 
 Migrations are applied to the live Supabase project via the **Supabase MCP server** (`.mcp.json` → `mcp__supabase__apply_migration` / `execute_sql`), not by any local migration runner. **The live database is the source of truth for function bodies.** Some files in [db/migrations/](db/migrations/) only record the *schema delta* — e.g. [0005](db/migrations/0005_add_product_addons.sql)/[0006](db/migrations/0006_addon_flavor_scope.sql) note that the full add-on-aware `place_order` body was applied directly via MCP, so reading the `.sql` files alone will not give you the current `place_order`. When changing DB logic, inspect the live function (via MCP `execute_sql`) and add a new numbered file documenting the change.
 
-**To change the menu or prices:** edit `products` / `product_flavors` / `product_addons` rows in Supabase (Table Editor or `execute_sql`). The order form picks up changes on next load. The **marketing menu images are separate** (see below).
+**To change the menu or prices:** the owner does it in **admin.html → Menu** (since [0027](db/migrations/0027_menu_admin_and_sold_out.sql)); add-ons (`product_addons`) are still edited in Supabase directly. See "Menu in the database" below.
+
+## Menu in the database, Sold out (0027)
+
+- **`menu_sections` / `menu_items` are the source of truth for the `#menu` section.** [js/menu.js](js/menu.js) fetches them (anon, RLS shows only visible rows) and replaces the static cards in `index.html`; if the fetch fails or returns nothing, the static cards stay — they are only a no-JS / outage fallback now and will drift from the database, which is fine.
+- A card's **`sells`** (jsonb) lists the order-form rows it stands for: `[{"p":"basque","f":"Pistachio"}]` (one flavor) or `[{"p":"meringue-roll"}]` (whole product). Fruit/cookie flavor cards sell both the piece and the box flavor; the box card sells the box product.
+- **`products.sold_out` / `product_flavors.sold_out` are derived — never write them.** `menu_sync_availability()` (statement triggers on `menu_items`, `menu_sections`, `product_flavors` insert/delete) sets a row sold out when some card sells it and every such card is off (sold_out, hidden, or in a hidden section); a product with flavors is also sold out when all its flavors are. Rows no card sells stay orderable.
+- Public RLS hides sold-out rows (`products_public_read` = `active and not sold_out`, `flavors_public_read` = `not sold_out`), so the order form **and the iPhone app** stop offering them with no code change. `place_order` bypasses RLS, so the `order_items_refuse_sold_out` BEFORE INSERT trigger raises **`SOLD_OUT`** (hint = product id); `handleSoldOut()` in `order-form.js` shows it.
+- Renaming a flavor (`product_flavor_renamed` trigger) rewrites the cards' `sells` and `product_addons.flavor`. Deleting a flavor leaves its links in place, so re-adding the same name re-attaches the card.
+- Admin rights added by 0027 (all via `is_admin()` RLS): full CRUD on menu tables (a section with cards can't be deleted — FK restrict), insert/update on `products` (column grants exclude `sold_out`; no delete — retire with `active = false`; new ids must match `products_id_slug`), insert/update/delete on `product_flavors`, upload to the public Storage bucket **`menu-photos`** (photos are resized to 1000 px JPEG in the browser; `menu_items.image_url` must be `images/...` or that bucket's public URL — check constraint).
+- admin.html's CSP `img-src` allows `blob:` (photo preview) and the Supabase origin (bucket photos).
 
 ## Menu images / photo pipeline (Python)
 
 Two distinct, manually-run pipelines using Pillow (and `rembg` for cutouts). They are not part of any automated build.
 
-- [scripts/build-menu.py](scripts/build-menu.py) — the **marketing menu** generator. The big per-flavor menu card grid in `index.html` (the `#menu` section) is generated from the `MENU` list in this script, written to `_menu_snippet.html`, and pasted into `index.html` by hand. It also resizes/compresses each photo into [images/menu/](images/menu/) and appends a **content-hash `?v=` query** to each `<img src>` for cache-busting (so swapping a photo doesn't serve stale cached images). Run: `py scripts/build-menu.py "<source photos dir>"`.
+- [scripts/build-menu.py](scripts/build-menu.py) — generator of the **static fallback** menu cards (the live menu comes from the database since 0027 — new cards and photos are added in admin.html → Menu, not here). The big per-flavor menu card grid in `index.html` (the `#menu` section) is generated from the `MENU` list in this script, written to `_menu_snippet.html`, and pasted into `index.html` by hand. It also resizes/compresses each photo into [images/menu/](images/menu/) and appends a **content-hash `?v=` query** to each `<img src>` for cache-busting (so swapping a photo doesn't serve stale cached images). Run: `py scripts/build-menu.py "<source photos dir>"`.
 - [scripts/process-photos.py](scripts/process-photos.py) — background-removal pipeline (rembg/u2net) that centers a subject on a warm-cream gradient; produces square product shots. Requires `pip install rembg pillow numpy onnxruntime scipy`.
 
 When you edit menu items in `index.html`, prefer editing `scripts/build-menu.py` and regenerating the snippet rather than hand-editing the generated card markup, so the two stay consistent.

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://xlicuyemmiapundcqqqf.supabase.co; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://xlicuyemmiapundcqqqf.supabase.co; connect-src https://xlicuyemmiapundcqqqf.supabase.co; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex,nofollow">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -102,6 +102,12 @@
 
     <!-- Dashboard -->
     <section id="view-dash" class="adm-view" hidden aria-labelledby="dash-title">
+      <div class="adm-tabs" role="tablist" aria-label="Dashboard sections">
+        <button type="button" role="tab" id="tab-orders" class="adm-tab" aria-selected="true" aria-controls="panel-orders">Orders</button>
+        <button type="button" role="tab" id="tab-menu" class="adm-tab" aria-selected="false" aria-controls="panel-menu" tabindex="-1">Menu</button>
+      </div>
+
+      <div id="panel-orders" role="tabpanel" aria-labelledby="tab-orders">
       <header class="dash-head">
         <h1 class="dash-title" id="dash-title">Orders</h1>
         <div class="dash-tools">
@@ -132,7 +138,50 @@
       <p id="dash-empty" class="dash-empty" hidden></p>
 
       <ul id="orders-list" class="orders"></ul>
+      </div>
+
+      <!-- Menu: sections, cards, sold out, order-form options (js/admin-menu.js) -->
+      <div id="panel-menu" role="tabpanel" aria-labelledby="tab-menu" hidden>
+        <header class="dash-head">
+          <h1 class="dash-title">Menu</h1>
+          <div class="dash-tools">
+            <button type="button" id="m-add-section" class="btn btn--primary btn--sm">+ Section</button>
+            <button type="button" id="m-refresh" class="btn btn--ghost btn--sm">Refresh</button>
+          </div>
+        </header>
+        <p class="m-hint">Saved changes are live on xoxopastry.com right away. <strong>Sold out</strong> greys the card out on the menu and takes it out of the order form until you switch it back.</p>
+
+        <div id="m-loading" class="dash-wait" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Loading the menu&hellip;</p>
+        </div>
+        <div id="m-error" class="dash-error" hidden>
+          <p id="m-error-msg"></p>
+          <button type="button" id="m-retry" class="btn btn--primary">Try again</button>
+        </div>
+        <p id="m-status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+        <div id="m-sections" class="m-sections"></div>
+
+        <section class="m-catalog" aria-labelledby="m-catalog-title">
+          <header class="m-catalog__head">
+            <h2 class="m-catalog__title" id="m-catalog-title">Order form options</h2>
+            <button type="button" id="m-add-product" class="btn btn--ghost btn--sm">+ Product</button>
+          </header>
+          <p class="m-hint">What customers pick in the order form: each product with its price, minimum and flavors. Menu cards point at these — a product no card points at is still orderable.</p>
+          <ul id="m-products" class="m-products"></ul>
+        </section>
+      </div>
     </section>
+
+    <dialog id="m-dialog" class="m-dialog" aria-labelledby="m-dialog-title">
+      <form id="m-dialog-form" class="m-dialog__form" novalidate>
+        <h2 id="m-dialog-title" class="m-dialog__title"></h2>
+        <div id="m-dialog-body" class="m-dialog__body"></div>
+        <p id="m-dialog-msg" class="auth-msg auth-msg--error" role="alert"></p>
+        <div id="m-dialog-actions" class="m-dialog__actions"></div>
+      </form>
+    </dialog>
 
   </main>
 
@@ -145,5 +194,6 @@
   <script src="vendor/supabase.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/admin.js" defer></script>
+  <script src="js/admin-menu.js" defer></script>
 </body>
 </html>
